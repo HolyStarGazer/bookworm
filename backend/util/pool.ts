@@ -1,11 +1,19 @@
 import { Pool } from "pg"
 
+// created a connection instance to connect to the RDBMS
+// added environmental variables for an extra layer of security
+const {
+  POSTGRES_HOST,
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_PORT
+} = process.env
+
 const pool = new Pool({
-  host: process.env.POSTGRES_HOST,
-  database: process.env.DB_NAME,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  port: Number(process.env.POSTGRES_PORT),
+  host: POSTGRES_HOST,
+  user: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  port: Number(POSTGRES_PORT),
   ssl: { rejectUnauthorized: false }
 })
 

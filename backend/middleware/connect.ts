@@ -1,6 +1,7 @@
 import { type Request, type Response } from "express"
 import pool from "../util/pool"
 
+// Connects to the RDBMS with a test query
 const connectToDB = async (_: Request, res: Response) => {
   try {
     const client = await pool.connect()
