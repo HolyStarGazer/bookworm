@@ -12,6 +12,12 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_settings">Settings</string>
 
+    <string-array name="settings_length_units">
+        <item>words</item>
+        <item>pages</item>
+        <item>chapters</item>
+    </string-array>
+
     <string name="lorem_ipsum_title">Lorem Ipsum"</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
         typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
