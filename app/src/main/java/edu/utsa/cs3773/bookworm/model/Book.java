@@ -7,7 +7,8 @@ public class Book {
     private String title;
     private String subtitle;
     private ArrayList<String> authors;
-    private ArrayList<String> genres;
+    private ArrayList<Genre> genres;
+    private String description;
     private double averageRating;
     private ArrayList<Review> reviews;
 
@@ -61,24 +62,32 @@ public class Book {
         this.authors.remove(author);
     }
 
-    public ArrayList<String> getGenres() {
+    public ArrayList<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(ArrayList<String> genres) {
+    public void setGenres(ArrayList<Genre> genres) {
         this.genres = genres;
     }
 
-    public void addGenre(String genre) {
+    public void addGenre(Genre genre) {
         this.genres.add(genre);
     }
 
-    public void removeGenre(String genre) {
+    public void removeGenre(Genre genre) {
         this.genres.remove(genre);
     }
 
     public void clearGenres() {
         this.genres.clear();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getAverageRating() {
