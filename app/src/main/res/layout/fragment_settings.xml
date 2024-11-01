@@ -97,12 +97,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24sp"
-                android:minHeight="48dp"
-                android:inputType="text"
                 android:hint="Comma-separated list of genres"
-                android:textSize="18sp"
+                android:inputType="text"
+                android:minHeight="48dp"
                 android:textColor="?attr/colorOnSecondary"
-                android:textColorHint="?attr/colorAccent" />
+                android:textColorHint="?attr/colorAccent"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -119,9 +119,9 @@
                 android:hint="Comma-separated list of genres"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:textSize="18sp"
                 android:textColor="?attr/colorOnSecondary"
-                android:textColorHint="?attr/colorAccent" />
+                android:textColorHint="?attr/colorAccent"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -138,9 +138,9 @@
                 android:hint="Comma-separated list of authors"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:textSize="18sp"
                 android:textColor="?attr/colorOnSecondary"
-                android:textColorHint="?attr/colorAccent" />
+                android:textColorHint="?attr/colorAccent"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="match_parent"

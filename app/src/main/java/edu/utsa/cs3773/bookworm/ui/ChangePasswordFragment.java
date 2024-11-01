@@ -8,18 +8,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import edu.utsa.cs3773.bookworm.R;
 
-public class ChangeEmailFragment extends Fragment implements View.OnClickListener {
+public class ChangePasswordFragment extends Fragment implements View.OnClickListener {
 
     NavController navController;
     Toolbar toolbar;
 
-    public ChangeEmailFragment() {
-        super(R.layout.fragment_change_email);
+    public ChangePasswordFragment() {
+        super(R.layout.fragment_change_password);
     }
 
     @Override
@@ -27,8 +26,8 @@ public class ChangeEmailFragment extends Fragment implements View.OnClickListene
         navController = Navigation.findNavController(view);
         toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setVisibility(View.GONE);
-        view.findViewById(R.id.change_email_up_button).setOnClickListener(this);
-        view.findViewById(R.id.change_email_submit_button).setOnClickListener(this);
+        view.findViewById(R.id.change_password_up_button).setOnClickListener(this);
+        view.findViewById(R.id.change_password_submit_button).setOnClickListener(this);
     }
 
     @Override
@@ -39,15 +38,13 @@ public class ChangeEmailFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.change_email_up_button) navController.navigateUp();
-        else if (view.getId() == R.id.change_email_submit_button) {
+        if (view.getId() == R.id.change_password_up_button) navController.navigateUp();
+        else if (view.getId() == R.id.change_password_submit_button) {
             //if invalid input
-            //  update feedback field
+            //  update fields
             //else {
                 //update backend
-                Bundle args = new Bundle();
-                args.putInt("from", R.layout.fragment_change_email);
-                navController.navigate(R.id.nav_email_confirmation, args, new NavOptions.Builder().setPopUpTo(R.id.nav_settings, false, false).build());
+                navController.navigateUp();
             //}
         }
     }

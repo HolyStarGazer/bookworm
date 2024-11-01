@@ -40,4 +40,10 @@
         android:name="edu.utsa.cs3773.bookworm.ui.EmailConfirmationFragment"
         android:label="Email Confirmation Sent"
         tools:layout="@layout/fragment_email_confirmation" />
+
+    <fragment
+        android:id="@+id/nav_change_password"
+        android:name="edu.utsa.cs3773.bookworm.ui.ChangePasswordFragment"
+        android:label="Change Password"
+        tools:layout="@layout/fragment_change_password" />
 </navigation>
