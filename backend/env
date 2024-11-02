@@ -1,4 +1,0 @@
-POSTGRES_HOST=bookworm-db.c5ygmg6u859l.us-east-2.rds.amazonaws.com
-POSTGRES_PORT=5432
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=vd,'T%87+)89
