@@ -46,4 +46,16 @@
         android:name="edu.utsa.cs3773.bookworm.ui.ChangePasswordFragment"
         android:label="Change Password"
         tools:layout="@layout/fragment_change_password" />
+
+    <fragment
+        android:id="@+id/nav_book_details"
+        android:name="edu.utsa.cs3773.bookworm.ui.BookDetailsFragment"
+        android:label="Book Details"
+        tools:layout="@layout/fragment_book_details" />
+
+    <fragment
+        android:id="@+id/nav_review_editor"
+        android:name="edu.utsa.cs3773.bookworm.ui.ReviewEditorFragment"
+        android:label="Review Editor"
+        android:layout="@layout/fragment_review_editor" />
 </navigation>

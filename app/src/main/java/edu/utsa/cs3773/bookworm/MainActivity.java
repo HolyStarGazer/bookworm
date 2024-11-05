@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
             navController.navigate(R.id.nav_settings);
         }
+        else if (item.getItemId() == R.id.nav_book_details) {
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.nav_book_details);
+        }
         return super.onOptionsItemSelected(item);
     }
 
