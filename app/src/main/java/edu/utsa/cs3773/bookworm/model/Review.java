@@ -6,27 +6,30 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Review {
-    private int id;
+    private final int id;
     private Book book;
     private User reviewer;
     private String content;
     private double rating;
     private LocalDateTime timestamp;
 
-    public Review(User reviewer, Book book, String content, double rating) {
+    public Review(int id, User reviewer, Book book, String content, double rating) {
+        this.id = id;
         this.reviewer = reviewer;
         this.book = book;
         this.content = content;
         this.rating = rating;
     }
 
-    public Review(User reviewer, Book book, String content) {
+    public Review(int id, User reviewer, Book book, String content) {
+        this.id = id;
         this.reviewer = reviewer;
         this.book = book;
         this.content = content;
     }
 
-    public Review(User reviewer, Book book, double rating) {
+    public Review(int id, User reviewer, Book book, double rating) {
+        this.id = id;
         this.reviewer = reviewer;
         this.book = book;
         this.rating = rating;
@@ -34,10 +37,6 @@ public class Review {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Book getBook() {

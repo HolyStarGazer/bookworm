@@ -3,8 +3,8 @@ package edu.utsa.cs3773.bookworm.model;
 import java.util.List;
 
 public class Admin extends User {
-    public Admin(String username, String password, String email) {
-        super(username, password, email);
+    public Admin(int id, String username, String password, String email) {
+        super(id, username, password, email);
         setAdmin(true);
     }
 

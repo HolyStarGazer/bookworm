@@ -3,31 +3,30 @@ package edu.utsa.cs3773.bookworm.model;
 import java.util.ArrayList;
 
 public class Book {
-    private int id;
+    private final int id;
     private String title;
     private String subtitle;
-    private ArrayList<String> authors;
+    private ArrayList<Author> authors;
     private ArrayList<Genre> genres;
     private String description;
+    private int isbn10;
+    private int isbn13;
     private double averageRating;
     private ArrayList<Review> reviews;
 
-    public Book (String title) {
-
+    public Book (int id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
-    public Book (String title, String subtitle) {
-
+    public Book (int id, String title, String subtitle) {
+        this.id = id;
+        this.title = title;
+        this.subtitle = subtitle;
     }
-
-    public Book () {}
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -46,19 +45,19 @@ public class Book {
         this.subtitle = subtitle;
     }
 
-    public ArrayList<String> getAuthors() {
+    public ArrayList<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(ArrayList<String> authors) {
+    public void setAuthors(ArrayList<Author> authors) {
         this.authors = authors;
     }
 
-    public void addAuthor(String author) {
+    public void addAuthor(Author author) {
         this.authors.add(author);
     }
 
-    public void removeAuthor(String author) {
+    public void removeAuthor(Author author) {
         this.authors.remove(author);
     }
 
@@ -88,6 +87,22 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getIsbn10() {
+        return isbn10;
+    }
+
+    public void setIsbn10(int isbn10) {
+        this.isbn10 = isbn10;
+    }
+
+    public int getIsbn13() {
+        return isbn13;
+    }
+
+    public void setIsbn13(int isbn13) {
+        this.isbn13 = isbn13;
     }
 
     public double getAverageRating() {
