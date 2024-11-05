@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class ConfirmDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

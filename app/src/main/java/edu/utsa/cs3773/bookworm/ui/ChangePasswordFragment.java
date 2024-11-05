@@ -14,8 +14,8 @@ import edu.utsa.cs3773.bookworm.R;
 
 public class ChangePasswordFragment extends Fragment implements View.OnClickListener {
 
-    NavController navController;
-    Toolbar toolbar;
+    private NavController navController;
+    private Toolbar toolbar;
 
     public ChangePasswordFragment() {
         super(R.layout.fragment_change_password);

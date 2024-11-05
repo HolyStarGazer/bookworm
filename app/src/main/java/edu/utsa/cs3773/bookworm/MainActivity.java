@@ -80,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (item.getItemId() == R.id.nav_book_details) {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.nav_book_details);
+            Bundle args = new Bundle();
+            args.putLong("book", 0);    //must pass book ID as argument when navigating to book details page
+            navController.navigate(R.id.nav_book_details, args);
         }
         return super.onOptionsItemSelected(item);
     }

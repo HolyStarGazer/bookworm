@@ -13,11 +13,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import edu.utsa.cs3773.bookworm.R;
+import edu.utsa.cs3773.bookworm.model.Book;
 
 public class BookDetailsFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
     private FragmentManager fragmentManager;
+    private long book;
     private boolean isFavorite;
 
     public BookDetailsFragment() {
@@ -28,6 +30,7 @@ public class BookDetailsFragment extends Fragment implements View.OnClickListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         navController = Navigation.findNavController(view);
         fragmentManager = getParentFragmentManager();
+        book = getArguments().getLong("book");
         view.findViewById(R.id.book_details_favorite_button).setOnClickListener(this);
         view.findViewById(R.id.book_details_leave_review_button).setOnClickListener(this);
         view.findViewById(R.id.book_details_edit_review_button).setOnClickListener(this);
@@ -77,7 +80,9 @@ public class BookDetailsFragment extends Fragment implements View.OnClickListene
             dialog.show(fragmentManager, "USER_DELETE_REVIEW_DIALOG");
         }
         else if (view.getId() == R.id.book_details_see_reviews_button) {
-            //go to reviews page
+            Bundle args = new Bundle();
+            args.putLong("book", book);
+            navController.navigate(R.id.nav_reviews, args);
         }
     }
 }

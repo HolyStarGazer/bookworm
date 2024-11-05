@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/option_remove_review"
+        android:title="Remove Review" />
+    <item
+        android:id="@+id/option_delete_review_contents"
+        android:title="Delete Contents" />
+</menu>
