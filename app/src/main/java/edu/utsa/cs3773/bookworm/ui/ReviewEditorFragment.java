@@ -7,27 +7,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import edu.utsa.cs3773.bookworm.R;
 
-public class ChangePasswordFragment extends Fragment implements View.OnClickListener {
+public class ReviewEditorFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
+    private FragmentManager fragmentManager;
     private Toolbar toolbar;
 
-    public ChangePasswordFragment() {
-        super(R.layout.fragment_change_password);
+    public ReviewEditorFragment() {
+        super(R.layout.fragment_review_editor);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         navController = Navigation.findNavController(view);
+        fragmentManager = getParentFragmentManager();
         toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setVisibility(View.GONE);
-        view.findViewById(R.id.change_password_up_button).setOnClickListener(this);
-        view.findViewById(R.id.change_password_submit_button).setOnClickListener(this);
+        view.findViewById(R.id.review_editor_save_button).setOnClickListener(this);
+        view.findViewById(R.id.review_editor_cancel_button).setOnClickListener(this);
+        //populate fields with appropriate data
     }
 
     @Override
@@ -38,14 +42,12 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.change_password_up_button) navController.navigateUp();
-        else if (view.getId() == R.id.change_password_submit_button) {
-            //if invalid input
-            //  update fields
-            //else {
-                //update backend
-                navController.navigateUp();
-            //}
+        if (view.getId() == R.id.review_editor_save_button) {
+            //update backend
+            Bundle result = new Bundle();
+            result.putBoolean("changed", true);
+            fragmentManager.setFragmentResult("updateReview", result);
         }
+        navController.navigateUp();
     }
 }

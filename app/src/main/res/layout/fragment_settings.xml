@@ -17,22 +17,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingHorizontal="12sp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Account"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnBackground" />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Email Address"
-                android:textSize="24sp"
-                android:textColor="?attr/colorOnBackground" />
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/settings_current_email"
@@ -65,8 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password"
-                android:textSize="24sp"
-                android:textColor="?attr/colorOnBackground" />
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/settings_password_button"
@@ -81,16 +82,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="\nPreferences"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnBackground" />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Genres of interest (comma-separated list):"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnBackground" />
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/settings_genre_pos"
@@ -108,8 +109,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Genres of disinterest (comma-separated list):"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnBackground" />
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/settings_genre_neg"
@@ -127,8 +128,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Liked authors (comma-separated list):"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnBackground" />
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/settings_author_pos"
@@ -146,8 +147,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Disliked authors (comma-separated list):"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnBackground" />
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/settings_author_neg"
@@ -165,14 +166,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Length preference:"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnBackground" />
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="24sp">
+                android:layout_marginHorizontal="24sp"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/settings_length_min"
@@ -182,9 +183,9 @@
                     android:hint="Min"
                     android:inputType="text"
                     android:minHeight="48dp"
-                    android:textSize="18sp"
                     android:textColor="?attr/colorOnSecondary"
-                    android:textColorHint="?attr/colorAccent" />
+                    android:textColorHint="?attr/colorAccent"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -192,8 +193,8 @@
                     android:layout_weight="1"
                     android:text="to"
                     android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:textColor="?attr/colorOnBackground" />
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/settings_length_max"
@@ -203,9 +204,9 @@
                     android:hint="Max"
                     android:inputType="text"
                     android:minHeight="48dp"
-                    android:textSize="18sp"
                     android:textColor="?attr/colorOnSecondary"
-                    android:textColorHint="?attr/colorAccent" />
+                    android:textColorHint="?attr/colorAccent"
+                    android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/settings_length_unit_spinner"
@@ -213,9 +214,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18sp"
                     android:layout_weight="0.6"
-                    android:textSize="18sp"
                     android:entries="@array/settings_length_units"
-                    android:minHeight="48dp" />
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
