@@ -7,6 +7,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import edu.utsa.cs3773.bookworm.ui.login.ForgotPasswordFragment;
+import edu.utsa.cs3773.bookworm.ui.login.LoginFragment;
+import edu.utsa.cs3773.bookworm.ui.login.SignUpFragment;
+
 public class LoginActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
 

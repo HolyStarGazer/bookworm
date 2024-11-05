@@ -1,7 +1,6 @@
-package edu.utsa.cs3773.bookworm;
+package edu.utsa.cs3773.bookworm.ui.login;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import edu.utsa.cs3773.bookworm.LoginActivity;
+import edu.utsa.cs3773.bookworm.R;
 
 public class SignUpFragment extends Fragment {
 
