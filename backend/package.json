@@ -6,8 +6,8 @@
     "test": "test"
   },
   "scripts": {
-    "start": "node server.ts",
-    "dev": "nodemon server.ts",
+    "start": "node api/server.ts",
+    "dev": "nodemon api/server.ts",
     "build": "echo Hello, World!"
   },
   "keywords": [],
