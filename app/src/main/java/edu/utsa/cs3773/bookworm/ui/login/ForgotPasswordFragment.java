@@ -1,6 +1,7 @@
 package edu.utsa.cs3773.bookworm.ui.login;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,10 @@ public class ForgotPasswordFragment extends Fragment {
 
         resetPasswordButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
-            if (!email.isEmpty()) {
+            if (validateEmail(email)) {
                 resetPassword(email);
             } else {
-                Toast.makeText(getContext(), "Please enter your email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Please enter valid email address", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -40,6 +41,10 @@ public class ForgotPasswordFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private boolean validateEmail(String email) {
+        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void resetPassword(String email) {

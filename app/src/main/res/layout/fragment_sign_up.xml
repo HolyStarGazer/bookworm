@@ -1,51 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
+    android:layout_gravity="center"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:textSize="24sp"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="16dp" />
-
-    <EditText
-        android:id="@+id/signupUsernameEditText"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/signupPasswordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center">
 
-    <Button
-        android:id="@+id/signupButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:textSize="24sp"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="16dp" />
 
-    <TextView
-        android:id="@+id/signUpLoginLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Already have an account? Log in"
-        android:textColor="@color/purple_500"
-        android:layout_gravity="center_horizontal"
-        android:clickable="true"
-        android:focusable="true" />
+            <EditText
+                android:id="@+id/signupUsernameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp" />
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/signupPasswordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:layout_marginBottom="0dp" />
+
+            <TextView
+                android:id="@+id/passwordRequirementsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:padding="8dp"
+                android:text="Password requirements:\n• 8+ characters\n• 1+ uppercase letter\n• 1+ lowercase letter\n• 1+ number\n• 1+ special character (e.g. !@#$%^&amp;*)" />
+
+            <Button
+                android:id="@+id/signupButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/signUpLoginLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? Log in"
+                android:textColor="@color/purple_500"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

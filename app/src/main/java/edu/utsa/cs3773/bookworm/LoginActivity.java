@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(String username, String password) {
         if (isLoginValid(username, password)) {
+            Toast.makeText(this, "Welcome, " + username + "!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

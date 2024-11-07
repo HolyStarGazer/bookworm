@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -30,8 +32,17 @@ public class SignUpFragment extends Fragment {
             String username = signupUsernameEditText.getText().toString().trim();
             String password = signupPasswordEditText.getText().toString().trim();
 
-            // FIXME - Handle Database logic
-
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "Please enter both username and password", Toast.LENGTH_SHORT).show();
+            } else {
+                if (!checkPassword(password)) {
+                    Toast.makeText(getContext(), "Password does not meet requirements", Toast.LENGTH_SHORT).show();
+                } else {
+                    // FIXME - Handle Database logic
+                    Toast.makeText(getContext(), "Account created. Redirecting you to login page", Toast.LENGTH_SHORT).show();
+                    ((LoginActivity) getActivity()).showLoginFragment();
+                }
+            }
         });
 
         loginLink.setOnClickListener(v -> {
@@ -39,5 +50,37 @@ public class SignUpFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private boolean checkPassword(String password) {
+        /* Password requirement
+        - 8+ Characters
+        - 1+ Uppercase letter
+        - 1+ Lowercase letter
+        - 1+ Number
+        - 1+ Special character
+         */
+
+        // Check if password length is at least 8 characters
+        if (password.length() < 8)
+            return false;
+
+        // Check for at least one uppercase letter
+        if (!password.matches(".*[A-Z].*"))
+            return false;
+
+        // Check for at least one lowercase letter
+        if (!password.matches(".*[a-z].*"))
+            return false;
+
+        // Check for at least one digit
+        if (!password.matches(".*[0-9].*"))
+            return false;
+
+        // Check for at least one special character (non-alphanumeric)
+        if (!password.matches(".*[!@#$%^&*].*"))
+            return false;
+
+        return true;
     }
 }
