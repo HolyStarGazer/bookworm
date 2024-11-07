@@ -38,7 +38,7 @@ public class SignUpFragment extends Fragment {
                 if (!checkPassword(password)) {
                     Toast.makeText(getContext(), "Password does not meet requirements", Toast.LENGTH_SHORT).show();
                 } else {
-                    // FIXME - Handle Database logic
+                    // TODO - Handle Database logic
                     Toast.makeText(getContext(), "Account created. Redirecting you to login page", Toast.LENGTH_SHORT).show();
                     ((LoginActivity) getActivity()).showLoginFragment();
                 }

@@ -48,9 +48,9 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     private void resetPassword(String email) {
-        // FIXME - Handle sending password reset email
+        // TODO - Handle sending password reset email
 
-        // FIXME - Handle logic for database after email confirmation
+        // TODO - Handle logic for database after email confirmation
 
         Toast.makeText(getContext(), "Reset password email sent to " + email, Toast.LENGTH_LONG).show();
     }

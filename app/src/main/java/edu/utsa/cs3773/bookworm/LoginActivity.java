@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isLoginValid(String username, String password) {
-        // FIXME - Handle database logic
+        // TODO - Handle database logic
         // Query database to check if user exists
         // Fetch password and logic check
 
