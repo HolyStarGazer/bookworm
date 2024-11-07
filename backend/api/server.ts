@@ -1,12 +1,13 @@
-import express from "express"
 import dotenv from "dotenv"
-import apiRouter from "./routers/apiRouter"
-import showContentNotFound from "../middleware/notFound"
 
-const app = express()
-
+if (process.env.NODE_ENV !== "production")
 dotenv.config()
 
+import express from "express"
+const app = express()
+
+import apiRouter from "./routers/apiRouter"
+import showContentNotFound from "../middleware/notFound"
 import connectToDB from "../middleware/connect"
 
 app.use(express.json())
