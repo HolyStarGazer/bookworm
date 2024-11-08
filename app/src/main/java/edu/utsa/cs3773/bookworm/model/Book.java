@@ -16,6 +16,10 @@ public class Book {
     private ArrayList<Review> reviews;
     private String releaseDate;
     private String coverURL;
+    private double price;
+    private int pages;
+    private int words;
+    private int chapters;
 
 
     public Book (int id, String title) {
@@ -155,6 +159,38 @@ public class Book {
 
     public void setCoverURL(String coverURL) {
         this.coverURL = coverURL;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(int chapters) {
+        this.chapters = chapters;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public void setWords(int words) {
+        this.words = words;
+    }
+
+    public int getWords() {
+        return words;
     }
 
     public boolean matchesSearch(String query, String genre, String ratingString, String price) {
