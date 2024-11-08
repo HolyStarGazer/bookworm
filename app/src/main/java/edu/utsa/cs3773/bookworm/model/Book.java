@@ -7,12 +7,16 @@ public class Book {
     private String title;
     private String subtitle;
     private ArrayList<Author> authors;
+    private String publisher;
     private ArrayList<Genre> genres;
     private String description;
     private int isbn10;
     private int isbn13;
     private double averageRating;
     private ArrayList<Review> reviews;
+    private String releaseDate;
+    private String coverURL;
+
 
     public Book (int id, String title) {
         this.id = id;
@@ -59,6 +63,14 @@ public class Book {
 
     public void removeAuthor(Author author) {
         this.authors.remove(author);
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public ArrayList<Genre> getGenres() {
@@ -128,4 +140,34 @@ public class Book {
     public void removeReview(Review review) {
         this.reviews.remove(review);
     }
+
+    public String getCoverURL() {
+        return coverURL;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setCoverURL(String coverURL) {
+        this.coverURL = coverURL;
+    }
+
+    public boolean matchesSearch(String query, String genre, String ratingString, String price) {
+        // Check if title matches the search query (case insensitive)
+        boolean titleMatches = title.toLowerCase().contains(query);
+
+        // Check if genre, rating, and price match the selected filter values
+        boolean genreMatches = genre == null || this.genres.contains(genre);  // Compare Genre objects
+        boolean ratingMatches = ratingString.equals("Any") || this.averageRating >= Double.parseDouble(ratingString);
+        boolean priceMatches = price.equals("Any"); // TODO: Handle logic for price
+
+        // Return true if all conditions are met
+        return titleMatches && genreMatches && ratingMatches && priceMatches;
+    }
+
 }

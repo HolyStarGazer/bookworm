@@ -48,4 +48,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Add Glide dependencies
+    implementation(libs.glide) // Glide
+    annotationProcessor(libs.compiler) // Glide compiler
 }

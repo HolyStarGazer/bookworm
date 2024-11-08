@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Array for genres -->
+    <string-array name="genres_array">
+        <item>Fiction</item>
+        <item>Non-Fiction</item>
+        <item>Mystery</item>
+        <item>Fantasy</item>
+        <item>Science Fiction</item>
+        <item>Biography</item>
+        <item>Romance</item>
+    </string-array>
+
+    <!-- Array for ratings -->
+    <string-array name="ratings_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <!-- Array for price ranges -->
+    <string-array name="price_range_array">
+        <item>Under $10</item>
+        <item>$10 - $20</item>
+        <item>$20 - $30</item>
+        <item>$30 - $50</item>
+        <item>Above $50</item>
+    </string-array>
+</resources>
