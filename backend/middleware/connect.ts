@@ -2,12 +2,12 @@ import { type Request, type Response } from "express"
 import pool from "../util/pool"
 
 // Connects to the RDBMS with a test query
-const connectToDB = async (_: Request, res: Response) => {
+const connectToDB = async (_: Request, res: Response) => {  
   try {
     const client = await pool.connect()
 
     try {
-      const query = "SELECT * FROM get_samples()"
+      const query = "SELECT * FROM samples"
       
       const { rows } = await pool.query(query)
       res.json(rows)

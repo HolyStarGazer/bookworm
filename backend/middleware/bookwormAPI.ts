@@ -1,4 +1,5 @@
-import { type Request, type Response } from "express"
+import { type Request, type Response, type NextFunction } from "express"
+import pool from "../util/pool"
 
 async function fetchGraphQL(operationsDoc: string, operationName: string, variables: Record<string, any>) {
   const result = await fetch(
@@ -23,8 +24,8 @@ async function fetchGraphQL(operationsDoc: string, operationName: string, variab
 const operationsDoc = `
   query dataBookCategories {
     book_categories {
-      id
       name
+      id
     }
   }
   
@@ -130,11 +131,25 @@ const operationsDoc = `
 `
 
 const fetchBookCategories = async (_: Request, res: Response) => {
+  const instance = await pool.connect()
+  
   try {
     const { data } = await fetchGraphQL(operationsDoc, "dataBookCategories", {})
-    res.json({ data })
+    const categories: Array<{ name: string, id: number }> = data.book_categories
+
+    if(!categories)
+      throw new Error("book_categories array does not exist")
+
+    const query = `INSERT INTO categories VALUES ${categories.map((_, i) => `($${i + 1})`).join(", ")}`
+
+    const values = categories.map(c => c.name)
+    await instance.query(query, values)
+
+    res.json({ SUCCESS: "Insert successful!" })
   } catch (err: any) {
     res.status(500).json({ ERROR: err.message })
+  } finally {
+    instance.release()
   }
 }
 

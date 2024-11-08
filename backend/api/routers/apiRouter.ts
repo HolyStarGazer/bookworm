@@ -1,15 +1,9 @@
 import express from "express"
 import * as bookwormAPI from "../../middleware/bookwormAPI"
 
-// fetchBookCategories,
-//   fetchBooks,
-//   fetchStatuses,
-//   fetchTags,
-//   fetchAuthors,
-//   fetchPublishers,
-//   fetchReviews
-
 const route = express.Router()
+
+route.post("/books", bookwormAPI.fetchBooks)
 
 route.post("/categories", bookwormAPI.fetchBookCategories)
 
