@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.color.MaterialColors;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import edu.utsa.cs3773.bookworm.R;
 import edu.utsa.cs3773.bookworm.model.Review;
@@ -30,11 +32,10 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
     private FragmentManager fragmentManager;
     private long book;
     private LinearLayout listingLayout;
-    private View prevButton;
-    private View nextButton;
-    private ReviewListingView firstListing;
-    private ReviewListingView lastListing;
-    private ReviewListingView selectedListing;
+    private View prevButton, nextButton;
+    private ReviewListingView firstListing, lastListing, selectedListing;
+    private ArrayList<ReviewListingView> listings;
+    private int prevButtonVisibility = View.VISIBLE, nextButtonVisibility = View.VISIBLE;
 
     public ReviewsFragment() {
         super(R.layout.fragment_reviews);
@@ -45,19 +46,29 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
         navController = Navigation.findNavController(view);
         fragmentManager = getParentFragmentManager();
         book = getArguments().getLong("book");
-        listingLayout = view.findViewById(R.id.reviews_listing_layout);
-        int numReviews = PER_PAGE;
-        Review[] reviews = new Review[PER_PAGE];
-        Review beyond = null;
-        //get the first* PER_PAGE reviews for the current book and store them in the reviews array, and get the next review after* that and store it in beyond
-        //if there are fewer than PER_PAGE reviews, store them and update numReviews
-        fetchPage(numReviews, reviews);
         prevButton = view.findViewById(R.id.reviews_prev_button);
-        prevButton.setVisibility(View.GONE);
         prevButton.setOnClickListener(this);
         nextButton = view.findViewById(R.id.reviews_next_button);
-        if (beyond == null) nextButton.setVisibility(View.GONE);
         nextButton.setOnClickListener(this);
+        listingLayout = view.findViewById(R.id.reviews_listing_layout);
+        if (listings == null) {
+            int numReviews = PER_PAGE;
+            Review[] reviews = new Review[PER_PAGE];
+            Review beyond = null;
+            //get the first* PER_PAGE reviews for the current book and store them in the reviews array, and get the next review after* that and store it in beyond
+            //if there are fewer than PER_PAGE reviews, store them and update numReviews
+            fetchPage(numReviews, reviews);
+            prevButton.setVisibility(prevButtonVisibility = View.GONE);
+            if (beyond == null) nextButton.setVisibility(nextButtonVisibility = View.GONE);
+        }
+        else {
+            for (ReviewListingView listing : listings) {
+                ((ViewGroup)listing.getParent()).removeView(listing);
+                listingLayout.addView(listing);
+            }
+            prevButton.setVisibility(prevButtonVisibility);
+            nextButton.setVisibility(nextButtonVisibility);
+        }
     }
 
     @Override
@@ -75,8 +86,8 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
             //get the last* PER_PAGE reviews that come before* firstListing, and store the one before* that in beyond
             //if there are less than PER_PAGE reviews before* firstListing, get the first* PER_PAGE reviews
             fetchPage(PER_PAGE, reviews);
-            if (beyond == null) prevButton.setVisibility(View.GONE);
-            nextButton.setVisibility(View.VISIBLE);
+            if (beyond == null) prevButton.setVisibility(prevButtonVisibility = View.GONE);
+            nextButton.setVisibility(nextButtonVisibility = View.VISIBLE);
         }
         else if (view.getId() == R.id.reviews_next_button) {
             Review[] reviews = new Review[PER_PAGE];
@@ -84,24 +95,25 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
             //get the first* PER_PAGE reviews that come after* lastListing, and store the one after* that in beyond
             //if there are less than PER_PAGE reviews after* lastListing, get the last* PER_PAGE reviews
             fetchPage(PER_PAGE, reviews);
-            prevButton.setVisibility(View.VISIBLE);
-            if (beyond == null) nextButton.setVisibility(View.GONE);
+            prevButton.setVisibility(prevButtonVisibility = View.VISIBLE);
+            if (beyond == null) nextButton.setVisibility(nextButtonVisibility = View.GONE);
         }
     }
 
     private void fetchPage(int numReviews, Review[] reviews) {
+        listingLayout.removeAllViews();
+        listings = new ArrayList<ReviewListingView>();
         for (int i = 0; i < Math.min(PER_PAGE, numReviews); ++i) {
             ReviewListingView listing = (ReviewListingView)getLayoutInflater().inflate(R.layout.listing_review, listingLayout, false);
             listingLayout.addView(listing);
-            listing.setListingId(LocalDateTime.now().minusSeconds(i * 10));
-            listing.setUserId(PER_PAGE - i);
-            //set listing ID based on timestamp of reviews[i]
-            //set listing's user ID based on user ID of reviews[i]
+            listing.setListingId(LocalDateTime.now().minusSeconds(i * 10)); //set listing ID based on timestamp of reviews[i]
+            listing.setUserId(PER_PAGE - i);    //set listing's user ID based on user ID of reviews[i]
             if (i == 0) firstListing = listing;
             else if (i == Math.min(PER_PAGE, numReviews) - 1) lastListing = listing;
             //populate listing fields with data from reviews[i]
             //if user is not admin, listing.findViewById(R.id.review_listing_dropdown_button).setVisibility(View.GONE);
             listing.findViewById(R.id.review_listing_dropdown_button).setOnClickListener(this);
+            listings.add(listing);
         }
     }
 
@@ -114,6 +126,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
                     if (result.getBoolean("confirm")) {
                         //update backend
                         listingLayout.removeView(selectedListing);
+                        listings.remove(selectedListing);
                     }
                 }
             });

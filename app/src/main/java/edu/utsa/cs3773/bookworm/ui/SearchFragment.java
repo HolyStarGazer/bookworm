@@ -6,7 +6,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -28,25 +29,30 @@ import edu.utsa.cs3773.bookworm.model.Book;
 import edu.utsa.cs3773.bookworm.model.Genre;
 
 public class SearchFragment extends Fragment implements View.OnClickListener {
+    private static final int PER_PAGE = 10;
 
     private NavController navController;
     private FragmentManager fragmentManager;
     private MenuItem navSearch, navFavorites;
+    private RadioGroup searchBy;
+    private EditText searchBar, filterList, filterMin, filterMax;
     private Button genreButton, publisherButton, ratingButton, priceButton;
-    private View bottomNavigation, genreNotch, publisherNotch, ratingNotch, priceNotch, genrePublisherFilter, ratingPriceFilter, currency1, currency2, range1, range2, star1, star2;
+    private View bottomNavigation, genreNotch, publisherNotch, ratingNotch, priceNotch, genrePublisherFilter, ratingPriceFilter, currency1, currency2, range1, range2, star1, star2, prevButton, nextButton;
     private Spinner listInclusivity;
-    private TextView filterList, filterMin, filterMax;
-    private int currentFilter = 0;
-    private int genreInclusivitySelection = 1, publisherInclusivitySelection = 1;
+    private int currentFilter = 0, genreInclusivitySelection = 1, publisherInclusivitySelection = 1;
     private String genreList = "", publisherList = "";
     private float ratingMin = Float.NEGATIVE_INFINITY, ratingMax = Float.POSITIVE_INFINITY, priceMin = Float.NEGATIVE_INFINITY, priceMax = Float.POSITIVE_INFINITY;
+    private LinearLayout listingLayout;
+    private BookListingView firstListing, lastListing;
+    private BookListingView[] listings;
+    private int prevButtonVisibility = View.GONE, nextButtonVisibility = View.GONE;
 
     public SearchFragment() {
         super(R.layout.fragment_search);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         navController = Navigation.findNavController(view);
         fragmentManager = getParentFragmentManager();
         navSearch = ((Toolbar)getActivity().findViewById(R.id.toolbar)).getMenu().findItem(R.id.nav_search);
@@ -70,6 +76,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.search_range_clear_button).setOnClickListener(this);
         view.findViewById(R.id.search_prev_button).setOnClickListener(this);
         view.findViewById(R.id.search_next_button).setOnClickListener(this);
+        prevButton = view.findViewById(R.id.search_prev_button);
+        prevButton.setOnClickListener(this);
+        nextButton = view.findViewById(R.id.search_next_button);
+        nextButton.setOnClickListener(this);
+        searchBy = view.findViewById(R.id.search_by_radio);
+        searchBar = view.findViewById(R.id.search_bar);
+        if (!genreList.isEmpty()) genreButton.setBackgroundColor(MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimary, 0xFF6200EE));
+        if (!publisherList.isEmpty()) publisherButton.setBackgroundColor(MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimary, 0xFF6200EE));
+        if (ratingMin >= 1 || ratingMax <= 5) ratingButton.setBackgroundColor(MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimary, 0xFF6200EE));
+        if (priceMin >= 0 || priceMax < Float.POSITIVE_INFINITY) priceButton.setBackgroundColor(MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimary, 0xFF6200EE));
         genreNotch = view.findViewById(R.id.search_genre_notch);
         publisherNotch = view.findViewById(R.id.search_publisher_notch);
         ratingNotch = view.findViewById(R.id.search_rating_notch);
@@ -86,6 +102,37 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         range2 = view.findViewById(R.id.search_filter_range2);
         star1 = view.findViewById(R.id.search_filter_star1);
         star2 = view.findViewById(R.id.search_filter_star2);
+        if (currentFilter == 1) {
+            genreNotch.setVisibility(View.VISIBLE);
+            genrePublisherFilter.setVisibility(View.VISIBLE);
+        }
+        else if (currentFilter == 2) {
+            publisherNotch.setVisibility(View.VISIBLE);
+            genrePublisherFilter.setVisibility(View.VISIBLE);
+        }
+        else if (currentFilter == 3) {
+            currency1.setVisibility(View.GONE);
+            currency2.setVisibility(View.GONE);
+            range1.setVisibility(View.VISIBLE);
+            range2.setVisibility(View.VISIBLE);
+            star1.setVisibility(View.VISIBLE);
+            star2.setVisibility(View.VISIBLE);
+            ratingNotch.setVisibility(View.VISIBLE);
+            ratingPriceFilter.setVisibility(View.VISIBLE);
+        }
+        else if (currentFilter == 4) {
+            priceNotch.setVisibility(View.VISIBLE);
+            ratingPriceFilter.setVisibility(View.VISIBLE);
+        }
+        listingLayout = view.findViewById(R.id.search_listing_layout);
+        if (listings != null) {
+            for (int i = 0; i < listings.length; ++i) {
+                ((ViewGroup)listings[i].getParent()).removeView(listings[i]);
+                listingLayout.addView(listings[i]);
+            }
+        }
+        prevButton.setVisibility(prevButtonVisibility);
+        nextButton.setVisibility(nextButtonVisibility);
     }
 
     @Override
@@ -99,7 +146,22 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.search_submit_button) {
-            //submit search
+            currentFilter = 0;
+            genreNotch.setVisibility(View.INVISIBLE);
+            publisherNotch.setVisibility(View.INVISIBLE);
+            ratingNotch.setVisibility(View.INVISIBLE);
+            priceNotch.setVisibility(View.INVISIBLE);
+            genrePublisherFilter.setVisibility(View.GONE);
+            ratingPriceFilter.setVisibility(View.GONE);
+            int numBooks = PER_PAGE;
+            Book[] books = new Book[PER_PAGE];
+            Book beyond = null;
+            //use search type, terms, and filters to generate a database query
+            //get the first* PER_PAGE books for the generated query and store them in the books array, and get the next book after* that and store it in beyond
+            //if there are fewer than PER_PAGE books, store them and update numBooks
+            fetchPage(numBooks, books);
+            prevButton.setVisibility(prevButtonVisibility = View.GONE);
+            nextButton.setVisibility(nextButtonVisibility = (beyond == null ? View.GONE : View.VISIBLE));
         }
         else if (view == genreButton || view == publisherButton || view == ratingButton || view == priceButton) {
             genreNotch.setVisibility(View.INVISIBLE);
@@ -210,11 +272,46 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 ratingButton.setBackgroundColor(MaterialColors.getColor(getView(), com.google.android.material.R.attr.colorAccent, 0xFF5F5F5F));
             else ratingButton.setBackgroundColor(MaterialColors.getColor(getView(), com.google.android.material.R.attr.colorPrimary, 0xFF6200EE));
         }
+        else if (view.getId() == R.id.book_listing) {
+            Bundle args = new Bundle();
+            args.putLong("book", ((BookListingView)view).getBookId());
+            args.putBoolean("optionsVisible", false);
+            args.putInt("bottomNavigationVisibility", View.GONE);
+            navController.navigate(R.id.nav_book_details, args);
+        }
         else if (view.getId() == R.id.search_prev_button) {
-            //load prev page
+            Book[] books = new Book[PER_PAGE];
+            Book beyond = null;
+            //get the last* PER_PAGE books that come before* firstListing, and store the one before* that in beyond
+            //if there are less than PER_PAGE books before* firstListing, get the first* PER_PAGE books
+            fetchPage(PER_PAGE, books);
+            if (beyond == null) prevButton.setVisibility(prevButtonVisibility = View.GONE);
+            nextButton.setVisibility(nextButtonVisibility = View.VISIBLE);
         }
         else if (view.getId() == R.id.search_next_button) {
-            //load next page
+            Book[] books = new Book[PER_PAGE];
+            Book beyond = null;
+            //get the first* PER_PAGE books that come after* lastListing, and store the one after* that in beyond
+            //if there are less than PER_PAGE books after* lastListing, get the last* PER_PAGE books
+            fetchPage(PER_PAGE, books);
+            prevButton.setVisibility(prevButtonVisibility = View.VISIBLE);
+            if (beyond == null) nextButton.setVisibility(nextButtonVisibility = View.GONE);
+        }
+    }
+
+    private void fetchPage(int numBooks, Book[] books) {
+        listingLayout.removeAllViews();
+        listings = new BookListingView[numBooks];
+        for (int i = 0; i < Math.min(PER_PAGE, numBooks); ++i) {
+            BookListingView listing = (BookListingView)getLayoutInflater().inflate(R.layout.listing_book, listingLayout, false);
+            listingLayout.addView(listing);
+            listing.setListingId(PER_PAGE - i); //set listing ID based on relevance of books[i]
+            listing.setBookId(PER_PAGE - i);    //set listing's book ID based on book ID of books[i]
+            if (i == 0) firstListing = listing;
+            else if (i == Math.min(PER_PAGE, numBooks) - 1) lastListing = listing;
+            //populate listing fields with data from books[i]
+            listing.setOnClickListener(this);
+            listings[i] = listing;
         }
     }
 }
