@@ -2,6 +2,8 @@ package edu.utsa.cs3773.bookworm.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import edu.utsa.cs3773.bookworm.MainActivity;
 import edu.utsa.cs3773.bookworm.R;
 
 public class ChangeEmailFragment extends Fragment implements View.OnClickListener {
@@ -44,16 +47,18 @@ public class ChangeEmailFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.change_email_up_button) navController.navigateUp();
         else if (view.getId() == R.id.change_email_submit_button) {
+            EditText input = getView().findViewById(R.id.change_email_new);
             //if invalid input
             //  update feedback field
             //else {
-                //update backend
-                Bundle result = new Bundle();
-                result.putBoolean("changed", true);
-                fragmentManager.setFragmentResult("updateEmail", result);
-                Bundle args = new Bundle();
-                args.putInt("from", R.layout.fragment_change_email);
-                navController.navigate(R.id.nav_email_confirmation, args, new NavOptions.Builder().setPopUpTo(R.id.nav_settings, false, false).build());
+            //update backend
+            ((MainActivity)getActivity()).getLoggedInUser().setEmail(input.getText().toString());
+            Bundle result = new Bundle();
+            result.putBoolean("changed", true);
+            fragmentManager.setFragmentResult("updateEmail", result);
+            Bundle args = new Bundle();
+            args.putInt("from", R.layout.fragment_change_email);
+            navController.navigate(R.id.nav_email_confirmation, args, new NavOptions.Builder().setPopUpTo(R.id.nav_settings, false, false).build());
             //}
         }
     }

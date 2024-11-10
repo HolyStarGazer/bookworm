@@ -1,9 +1,7 @@
 package edu.utsa.cs3773.bookworm.ui;
 
-import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,8 +16,11 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.color.MaterialColors;
+
+import java.time.LocalDateTime;
+
 import edu.utsa.cs3773.bookworm.R;
-import edu.utsa.cs3773.bookworm.model.Book;
 import edu.utsa.cs3773.bookworm.model.Review;
 
 public class ReviewsFragment extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -31,9 +32,9 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
     private LinearLayout listingLayout;
     private View prevButton;
     private View nextButton;
-    private ListingView firstListing;
-    private ListingView lastListing;
-    private ListingView selectedListing;
+    private ReviewListingView firstListing;
+    private ReviewListingView lastListing;
+    private ReviewListingView selectedListing;
 
     public ReviewsFragment() {
         super(R.layout.fragment_reviews);
@@ -62,7 +63,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.review_listing_dropdown_button) {
-            selectedListing = (ListingView)view.getParent().getParent();
+            selectedListing = (ReviewListingView)view.getParent().getParent();
             PopupMenu dropdown = new PopupMenu(getContext(), view);
             dropdown.getMenuInflater().inflate(R.menu.review_dropdown, dropdown.getMenu());
             dropdown.show();
@@ -90,9 +91,9 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
 
     private void fetchPage(int numReviews, Review[] reviews) {
         for (int i = 0; i < Math.min(PER_PAGE, numReviews); ++i) {
-            ListingView listing = (ListingView)getLayoutInflater().inflate(R.layout.listing_review, listingLayout, false);
+            ReviewListingView listing = (ReviewListingView)getLayoutInflater().inflate(R.layout.listing_review, listingLayout, false);
             listingLayout.addView(listing);
-            listing.setListingId(PER_PAGE - i);
+            listing.setListingId(LocalDateTime.now().minusSeconds(i * 10));
             listing.setUserId(PER_PAGE - i);
             //set listing ID based on timestamp of reviews[i]
             //set listing's user ID based on user ID of reviews[i]
@@ -129,7 +130,10 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
                 public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                     if (result.getBoolean("confirm")) {
                         //update backend
-                        ((TextView)selectedListing.findViewById(R.id.review_listing_content)).setText("    This review has no contents");
+                        TextView textField = selectedListing.findViewById(R.id.review_listing_contents);
+                        textField.setText("    This review has no contents");
+                        textField.setTextColor(MaterialColors.getColor(getView(), com.google.android.material.R.attr.colorAccent, 0xFF5F5F5F));
+                        textField.setTypeface(null, Typeface.ITALIC);
                     }
                 }
             });

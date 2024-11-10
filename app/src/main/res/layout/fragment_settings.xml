@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="12sp">
+            android:paddingHorizontal="6sp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -216,6 +216,7 @@
                     android:layout_weight="0.6"
                     android:entries="@array/settings_length_units"
                     android:minHeight="48dp"
+                    android:textColor="?attr/colorOnBackground"
                     android:textSize="18sp" />
             </LinearLayout>
 

@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="12sp">
+                android:paddingHorizontal="6sp">
 
                 <TextView
                     android:id="@+id/review_editor_username"
@@ -38,6 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
+                    android:progressBackgroundTint="?attr/colorSecondaryVariant"
                     android:progressTint="?attr/colorPrimary"
                     android:stepSize="1" />
 

@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/search_bottom_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="6sp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search by:"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="18sp" />
+
+                <RadioGroup
+                    android:id="@+id/search_by_radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12sp"
+                    android:checkedButton="@id/search_by_title_rbutton"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/search_by_title_rbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="?attr/colorOnBackground"
+                        android:text="Title"
+                        android:textColor="?attr/colorOnBackground"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/search_by_author_rbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="?attr/colorOnBackground"
+                        android:text="Author"
+                        android:textColor="?attr/colorOnBackground"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/search_by_isbn_rbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="?attr/colorOnBackground"
+                        android:text="ISBN"
+                        android:textColor="?attr/colorOnBackground"
+                        android:textSize="18sp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Search by title"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textColorHint="?attr/colorAccent"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/search_submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:contentDescription="Submit search"
+                    android:minWidth="48dp"
+                    app:icon="@drawable/magnifying_glass"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="24sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filters:"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <Button
+                        android:id="@+id/search_genre_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="?attr/colorAccent"
+                        android:minWidth="0dip"
+                        android:paddingHorizontal="6sp"
+                        android:text="Genre"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/search_genre_notch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="10dp"
+                        android:forceHasOverlappingRendering="true"
+                        android:scaleType="fitCenter"
+                        android:scaleX="0.25"
+                        android:scaleY="0.25"
+                        android:transformPivotX="24dp"
+                        android:transformPivotY="48dp"
+                        android:translationY="-3dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/notch" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6sp"
+                    android:layout_weight="9">
+
+                    <Button
+                        android:id="@+id/search_publisher_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="?attr/colorAccent"
+                        android:minWidth="0dip"
+                        android:paddingHorizontal="6sp"
+                        android:text="Publisher"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/search_publisher_notch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="10dp"
+                        android:forceHasOverlappingRendering="true"
+                        android:scaleType="fitCenter"
+                        android:scaleX="0.25"
+                        android:scaleY="0.25"
+                        android:transformPivotX="24dp"
+                        android:transformPivotY="48dp"
+                        android:translationY="-3dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/notch" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6sp"
+                    android:layout_weight="5">
+
+                    <Button
+                        android:id="@+id/search_rating_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="?attr/colorAccent"
+                        android:minWidth="0dip"
+                        android:paddingHorizontal="6sp"
+                        android:text="Rating"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/search_rating_notch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="10dp"
+                        android:forceHasOverlappingRendering="true"
+                        android:scaleType="fitCenter"
+                        android:scaleX="0.25"
+                        android:scaleY="0.25"
+                        android:transformPivotX="24dp"
+                        android:transformPivotY="48dp"
+                        android:translationY="-3dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/notch" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6sp"
+                    android:layout_weight="4.5">
+
+                    <Button
+                        android:id="@+id/search_price_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="?attr/colorAccent"
+                        android:minWidth="0dip"
+                        android:paddingHorizontal="6sp"
+                        android:text="Price"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/search_price_notch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="10dp"
+                        android:forceHasOverlappingRendering="true"
+                        android:scaleType="fitCenter"
+                        android:scaleX="0.25"
+                        android:scaleY="0.25"
+                        android:transformPivotX="24dp"
+                        android:transformPivotY="48dp"
+                        android:translationY="-3dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/notch" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_filter_genre_publisher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSecondaryVariant"
+                android:orientation="horizontal"
+                android:paddingHorizontal="6sp"
+                android:paddingVertical="6sp"
+                android:translationY="-4dp"
+                android:visibility="gone">
+
+                <Spinner
+                    android:id="@+id/search_filter_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.35"
+                    android:entries="@array/search_filter_inclusivity"
+                    android:minHeight="48dp"
+                    android:paddingEnd="-24sp"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-12sp"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:text=" of "
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/search_filter_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="List"
+                        android:inputType="text"
+                        android:minHeight="48dp"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textColorHint="?attr/colorAccent"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Comma-separated list"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12sp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/search_list_apply_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Apply"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/search_list_clear_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Clear"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_filter_rating_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSecondaryVariant"
+                android:orientation="horizontal"
+                android:paddingHorizontal="6sp"
+                android:paddingVertical="6sp"
+                android:translationY="-4sp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/search_filter_currency1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:text="$"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/search_filter_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Min"
+                        android:inputType="numberDecimal"
+                        android:minHeight="48dp"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textColorHint="?attr/colorAccent"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/search_filter_range1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.0 - 5.0"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="14sp"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <RatingBar
+                    android:id="@+id/search_filter_star1"
+                    style="@style/Widget.AppCompat.RatingBar.Indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="6dp"
+                    android:layout_weight="0"
+                    android:maxHeight="36dp"
+                    android:minHeight="36dp"
+                    android:numStars="1"
+                    android:progressTint="?attr/colorAccent"
+                    android:rating="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:text=" to "
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/search_filter_currency2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:text="$"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/search_filter_max"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Max"
+                        android:inputType="numberDecimal"
+                        android:minHeight="48dp"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textColorHint="?attr/colorAccent"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/search_filter_range2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.0 - 5.0"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="14sp"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <RatingBar
+                    android:id="@+id/search_filter_star2"
+                    style="@style/Widget.AppCompat.RatingBar.Indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="6dp"
+                    android:layout_weight="0"
+                    android:maxHeight="36dp"
+                    android:minHeight="36dp"
+                    android:numStars="1"
+                    android:progressTint="?attr/colorAccent"
+                    android:rating="1"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12sp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/search_range_apply_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Apply"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/search_range_clear_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Clear"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_listings_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/search_bottom_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/search_prev_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:minHeight="48dp"
+            android:paddingHorizontal="12sp"
+            android:text="&lt;"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/search_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:minHeight="48dp"
+            android:paddingHorizontal="12sp"
+            android:text="&gt;"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

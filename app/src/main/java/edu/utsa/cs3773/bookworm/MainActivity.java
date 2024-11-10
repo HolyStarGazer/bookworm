@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,12 +23,13 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.app.AppCompatActivity;
 
 import edu.utsa.cs3773.bookworm.databinding.ActivityMainBinding;
+import edu.utsa.cs3773.bookworm.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private Toolbar toolbar;
     private AppBarConfiguration appBarConfiguration;
+    private User loggedInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.appBarMain.toolbar);
 
         // Set up NavController for fragment navigation
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
             // Set up BottomNavigationView with NavController
-            BottomNavigationView bottomNavigationView = binding.bottomNavigation;
+            BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavigation;
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
             // Listener for BottomNavigationView
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        loggedInUser = new User(0, "username", "password", "email");    //set loggedInUser based on database info
     }
 
     @Override
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.overflow, menu); // Inflate the 3-dot overflow menu
+        getMenuInflater().inflate(R.menu.toolbar_options, menu); // Inflate the 3-dot overflow menu
         return true;
     }
 
@@ -94,19 +97,25 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainer);
         int id = item.getItemId();
 
-        if (id == R.id.nav_settings) {
-            navController.navigate(R.id.nav_settings);
-        } else if (id == R.id.nav_book_details) {
+        if (id == R.id.nav_search) {
+            navController.navigate(R.id.nav_search);
+        } else if (id == R.id.nav_settings) {
             Bundle args = new Bundle();
-            args.putLong("book", 0); // Pass book ID when navigating to book details page
-            navController.navigate(R.id.nav_book_details, args);
-        } else if (id == R.id.nav_logout) {
+            args.putBoolean("optionsVisible", ((Toolbar)findViewById(R.id.toolbar)).getMenu().findItem(R.id.nav_search).isVisible());    //must pass toolbar option visibility as argument when navigating to settings page
+            args.putInt("bottomNavigationVisibility", findViewById(R.id.bottom_navigation).getVisibility());    //must pass bottom navigation visibility as argument when navigating to settings page
+            navController.navigate(R.id.nav_settings, args);
+        }  else if (id == R.id.nav_logout) {
             Toast.makeText(this, "Logging out... ", Toast.LENGTH_SHORT).show();
+            //terminate session
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
     }
 }

@@ -16,14 +16,22 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import edu.utsa.cs3773.bookworm.MainActivity;
 import edu.utsa.cs3773.bookworm.R;
+import edu.utsa.cs3773.bookworm.model.User;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
     private FragmentManager fragmentManager;
-    private MenuItem navSettings;
+    private boolean optionsVisible;
+    private int bottomNavigationVisibility;
+    private MenuItem navSearch, navFavorites, navSettings;
+    private View bottomNavigation;
     private Button emailButton;
+    private User user;
 
     public SettingsFragment() {
         super(R.layout.fragment_settings);
@@ -33,21 +41,42 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         navController = Navigation.findNavController(view);
         fragmentManager = getParentFragmentManager();
+        optionsVisible = getArguments().getBoolean("optionsVisible");
+        bottomNavigationVisibility = getArguments().getInt("bottomNavigationVisibility");
+        navSearch = ((Toolbar)getActivity().findViewById(R.id.toolbar)).getMenu().findItem(R.id.nav_search);
+        navSearch.setVisible(false);
+        navFavorites = ((Toolbar)getActivity().findViewById(R.id.toolbar)).getMenu().findItem(R.id.nav_favorites);
+        navFavorites.setVisible(false);
         navSettings = ((Toolbar)getActivity().findViewById(R.id.toolbar)).getMenu().findItem(R.id.nav_settings);
         navSettings.setVisible(false);
+        bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigation.setVisibility(View.GONE);
         emailButton = view.findViewById(R.id.settings_email_button);
         emailButton.setOnClickListener(this);
         view.findViewById(R.id.settings_password_button).setOnClickListener(this);
-        ((Spinner)view.findViewById(R.id.settings_length_unit_spinner)).setSelection(1);
         view.findViewById(R.id.settings_prefs_apply_button).setOnClickListener(this);
         view.findViewById(R.id.settings_prefs_cancel_button).setOnClickListener(this);
-        //Populate fields with previously applied settings
+        user = ((MainActivity)getActivity()).getLoggedInUser();
+        if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+            TextView field = view.findViewById(R.id.settings_current_email);
+            field.setText("\t\t\tCurrently: " + user.getEmail());
+            field.setVisibility(View.VISIBLE);
+            field = view.findViewById(R.id.settings_email_confirmation);
+            //populate field with user's current confirmation status, retrieved from the database
+            field.setVisibility(View.VISIBLE);
+            emailButton.setText("Change");
+        }
+        ((Spinner)view.findViewById(R.id.settings_length_unit_spinner)).setSelection(1);
+        //populate fields with previously applied settings, retrieved from user object
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        navSearch.setVisible(optionsVisible);
+        navFavorites.setVisible(optionsVisible);
         navSettings.setVisible(true);
+        bottomNavigation.setVisibility(bottomNavigationVisibility);
     }
 
     @Override
@@ -57,7 +86,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                     if (result.getBoolean("changed") ) {
-                        //populate current email and email confirmation fields with values from database
+                        TextView field = getView().findViewById(R.id.settings_current_email);
+                        field.setText("\t\t\tCurrently: " + user.getEmail());
+                        field.setVisibility(View.VISIBLE);
+                        field = getView().findViewById(R.id.settings_email_confirmation);
+                        //populate field with user's current confirmation status, retrieved from the database
+                        field.setVisibility(View.VISIBLE);
                         emailButton.setText("Change");
                     }
                 }
@@ -69,7 +103,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             //update backend
         }
         else if (view.getId() == R.id.settings_prefs_cancel_button) {
-            //populate fields with previously applied settings
+            //populate fields with previously applied settings, retrieved from user object
         }
     }
 }

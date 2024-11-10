@@ -51,7 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         if (isLoginValid(username, password)) {
             Toast.makeText(this, "Welcome, " + username + "!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
+            Bundle args = new Bundle();
+            args.putLong("user", 0);    //must pass user ID as argument when navigating to MainActivity
+            startActivity(intent, args);
             finish();
         } else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();

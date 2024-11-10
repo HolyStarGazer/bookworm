@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -48,6 +49,8 @@ public class LibraryFragment extends Fragment {
                 // Navigate to the BookDetailsFragment
                 Bundle bundle = new Bundle();
                 bundle.putInt("book_id", book.getId());
+                bundle.putBoolean("optionsVisible", true);
+                bundle.putInt("bottomNavigationVisibility", View.VISIBLE);
                 Navigation.findNavController(rootView).navigate(R.id.action_libraryFragment_to_bookDetailsFragment, bundle);
             }
         });

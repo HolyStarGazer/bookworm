@@ -2,6 +2,8 @@ package edu.utsa.cs3773.bookworm.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,12 +42,53 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         if (view.getId() == R.id.change_password_up_button) navController.navigateUp();
         else if (view.getId() == R.id.change_password_submit_button) {
-            //if invalid input
-            //  update fields
+            boolean valid = true;
+            EditText input = getView().findViewById(R.id.change_password_old);
+            TextView feedback = getView().findViewById(R.id.change_password_old_feedback);
+            //if (correct old password) feedback.setVisibility(View.INVISIBLE);
             //else {
+            //  input.setText("");
+            //  feedback.setVisibility(View.VISIBLE);
+            //  valid = false;
+            //}
+            input = getView().findViewById(R.id.change_password_new);
+            EditText confirmation = getView().findViewById(R.id.change_password_confirm);
+            feedback = getView().findViewById(R.id.change_password_new_feedback);
+            if (input.getText() != null && checkPasswordRequirements(input.getText().toString())) feedback.setVisibility(View.INVISIBLE);
+            else {
+                input.setText("");
+                confirmation.setText("");
+                feedback.setVisibility(View.VISIBLE);
+                valid = false;
+            }
+            feedback = getView().findViewById(R.id.change_password_confirm_feedback);
+            if (confirmation.getText() != null && input.getText() != null && confirmation.getText().toString().equals(input.getText().toString())) feedback.setVisibility(View.INVISIBLE);
+            else {
+                input.setText("");
+                confirmation.setText("");
+                feedback.setVisibility(View.VISIBLE);
+                valid = false;
+            }
+            if (valid) {
                 //update backend
                 navController.navigateUp();
-            //}
+            }
         }
+    }
+
+    private boolean checkPasswordRequirements(String s) {
+        if (s.length() < 8) return false;
+        boolean containsLowercase = false;
+        boolean containsUppercase = false;
+        boolean containsNumber = false;
+        boolean containsSpecial = false;
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) < ' ' || s.charAt(i) > '~') return false;
+            if (s.charAt(i) >= 'a' && s.charAt(i) <= 'z') containsLowercase = true;
+            else if (s.charAt(i) >= 'A' && s.charAt(i) <= 'Z') containsUppercase = true;
+            else if (s.charAt(i) >= '0' && s.charAt(i) <= '9') containsNumber = true;
+            else containsSpecial = true;
+        }
+        return containsLowercase && containsUppercase && containsNumber && containsSpecial;
     }
 }

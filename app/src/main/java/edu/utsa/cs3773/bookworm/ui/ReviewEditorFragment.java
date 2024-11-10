@@ -31,7 +31,7 @@ public class ReviewEditorFragment extends Fragment implements View.OnClickListen
         toolbar.setVisibility(View.GONE);
         view.findViewById(R.id.review_editor_save_button).setOnClickListener(this);
         view.findViewById(R.id.review_editor_cancel_button).setOnClickListener(this);
-        //populate fields with appropriate data
+        //populate fields with appropriate data, retrieved from the database
     }
 
     @Override
