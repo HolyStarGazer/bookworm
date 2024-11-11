@@ -14,12 +14,23 @@ import androidx.navigation.Navigation;
 import edu.utsa.cs3773.bookworm.MainActivity;
 import edu.utsa.cs3773.bookworm.R;
 
+/**
+ * Fragment that displays the email confirmation page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_email_confirmation.xml"
+ */
 public class EmailConfirmationFragment extends Fragment implements View.OnClickListener {
 
     private int from = 0;
     private NavController navController;
     private Toolbar toolbar;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the email confirmation page layout.
+     */
     public EmailConfirmationFragment() {
         super(R.layout.fragment_email_confirmation);
     }

@@ -28,6 +28,13 @@ import edu.utsa.cs3773.bookworm.model.Author;
 import edu.utsa.cs3773.bookworm.model.Book;
 import edu.utsa.cs3773.bookworm.model.Genre;
 
+/**
+ * Fragment that displays the main search page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_search.xml"
+ */
 public class SearchFragment extends Fragment implements View.OnClickListener {
     private static final int PER_PAGE = 10;
 
@@ -47,6 +54,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private BookListingView[] listings;
     private int prevButtonVisibility = View.GONE, nextButtonVisibility = View.GONE;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the main search page layout.
+     */
     public SearchFragment() {
         super(R.layout.fragment_search);
     }
@@ -299,6 +310,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Populates this fragment with a single page of book listings, generated from the provided array of book data.
+     * Each element of the provided array is used to initialize a new book listing, which is then added to this fragment's freshly-cleared <code>listingLayout</code>
+     * view group and <code>listings</code> array. This fragment's <code>firstListing</code> and <code>lastListing</code> book listing objects are set to reference the
+     * first and last listings created, respectively.
+     *
+     * @param numBooks  the length of <code>books</code>
+     * @param books     a book array containing the data to use in initializing book listings
+     */
     private void fetchPage(int numBooks, Book[] books) {
         listingLayout.removeAllViews();
         listings = new BookListingView[numBooks];

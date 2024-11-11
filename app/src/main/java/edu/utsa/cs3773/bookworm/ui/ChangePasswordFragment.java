@@ -14,11 +14,22 @@ import androidx.navigation.Navigation;
 
 import edu.utsa.cs3773.bookworm.R;
 
+/**
+ * Fragment that displays the change password page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_change_password.xml"
+ */
 public class ChangePasswordFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
     private Toolbar toolbar;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the change password page layout.
+     */
     public ChangePasswordFragment() {
         super(R.layout.fragment_change_password);
     }
@@ -76,6 +87,12 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
         }
     }
 
+    /**
+     * Checks whether the provided string meets the service's password requirements.
+     *
+     * @param s the string to be checked
+     * @return  a boolean indicating whether <code>s</code> would be valid as a password
+     */
     private boolean checkPasswordRequirements(String s) {
         if (s.length() < 8) return false;
         boolean containsLowercase = false;

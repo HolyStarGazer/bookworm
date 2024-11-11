@@ -26,6 +26,13 @@ import edu.utsa.cs3773.bookworm.model.Author;
 import edu.utsa.cs3773.bookworm.model.Book;
 import edu.utsa.cs3773.bookworm.model.Genre;
 
+/**
+ * Fragment that displays the book details page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_book_details.xml"
+ */
 public class BookDetailsFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
@@ -42,6 +49,10 @@ public class BookDetailsFragment extends Fragment implements View.OnClickListene
     private ViewGroup userReview;
     private boolean isFavorite;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the book details page layout.
+     */
     public BookDetailsFragment() {
         super(R.layout.fragment_book_details);
     }
@@ -83,14 +94,16 @@ public class BookDetailsFragment extends Fragment implements View.OnClickListene
             }
             if (!authors.isEmpty()) setText(view.findViewById(R.id.book_details_authors), "by " + authors);
         }
-        //set the cover image
-        //set the publisher
-        //set the publication date
+        //FIXME set the cover image here
+        if (book.getPublisher() != null) setText(view.findViewById(R.id.book_details_publisher), book.getPublisher());
+        if (book.getReleaseDate() != null) setText(view.findViewById(R.id.book_details_date), book.getReleaseDate());
         if (book.getIsbn13() >= 0)  //check if an ISBN was found for this book
             setText(view.findViewById(R.id.book_details_isbn), "ISBN: " + Long.toString(book.getIsbn13()));
-        //set the word count
-        //set the page count
-        //set the chapter count
+        else if (book.getIsbn10() >= 0)
+            setText(view.findViewById(R.id.book_details_isbn), "ISBN: " + Long.toString(book.getIsbn10()));
+        if (book.getWords() >= 0) setText(view.findViewById(R.id.book_details_length_words), Integer.toString(book.getWords()));
+        if (book.getPages() >= 0) setText(view.findViewById(R.id.book_details_length_pages), Integer.toString(book.getPages()));
+        if (book.getChapters() >= 0) setText(view.findViewById(R.id.book_details_length_chapters), Integer.toString(book.getChapters()));
         if (book.getGenres() != null) {
             String genres = "";
             for (Genre g : book.getGenres()) {
@@ -101,7 +114,7 @@ public class BookDetailsFragment extends Fragment implements View.OnClickListene
             if (!genres.isEmpty()) setText(view.findViewById(R.id.book_details_genres), "Genres: " + genres);
         }
         if (book.getDescription() != null) setText(view.findViewById(R.id.book_details_description), "    " + book.getDescription());
-        //set the price
+        if (book.getPrice() >= 0) setText(view.findViewById(R.id.book_details_price), Double.toString(book.getPrice()));
         String instanceStateString = instanceState.getString("reviewCount", "");
         float instanceStateFloat = instanceState.getFloat("avgRating", -1);
         if (!(instanceStateString.isEmpty() || instanceStateFloat < 0)) {
@@ -250,6 +263,14 @@ public class BookDetailsFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    /**
+     * Sets the text, text color, and text style of the provided <code>TextView</code>.
+     * The provided <code>TextView</code> has its text set to the provided string, and its text color and style are set to the appropriate values for non-placeholder
+     * text in order to distinguish it from default placeholder text.
+     *
+     * @param tv    the text view to modify
+     * @param s     the string to set <code>tv</code>'s text to
+     */
     private void setText(TextView tv, String s) {
         tv.setText(s);
         tv.setTextColor(MaterialColors.getColor(getView(), com.google.android.material.R.attr.colorOnBackground, 0xFF000000));
