@@ -1,20 +1,8 @@
 import express from "express"
-import * as bookwormAPI from "../../middleware/bookwormAPI"
 
-const route = express.Router()
+const router = express.Router()
 
-route.post("/books", bookwormAPI.fetchBooks)
+/* TO IMPLEMENT IN THE NEXT SPRINT! */
+// Will fetch data from OUR database for the frontend application
 
-route.post("/categories", bookwormAPI.fetchBookCategories)
-
-route.post("/statuses", bookwormAPI.fetchStatuses)
-
-route.post("/tags", bookwormAPI.fetchTags)
-
-route.post("/authors", bookwormAPI.fetchAuthors)
-
-route.post("/publishers", bookwormAPI.fetchPublishers)
-
-route.post("/book-reviews", bookwormAPI.fetchReviews)
-
-export default route
+export default router

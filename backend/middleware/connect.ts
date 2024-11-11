@@ -1,8 +1,8 @@
 import { type Request, type Response } from "express"
 import pool from "../util/pool"
 
-// Connects to the RDBMS with a test query
-const connectToDB = async (_: Request, res: Response) => {  
+// Fetches sample data as a test query to ensure that the RDBMS connection is working properly
+const fetchDBSample = async (_: Request, res: Response) => {  
   try {
     const client = await pool.connect()
 
@@ -21,4 +21,4 @@ const connectToDB = async (_: Request, res: Response) => {
   }
 }
 
-export default connectToDB
+export default fetchDBSample

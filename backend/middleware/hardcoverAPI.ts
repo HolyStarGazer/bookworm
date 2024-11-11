@@ -4,7 +4,7 @@ import { type Author } from "../util/types/author"
 import { type Tag } from "../util/types/tag"
 import pool from "../util/pool"
 
-
+// The prime driver of creating GraphQL requests
 async function fetchGraphQL(operationsDoc: string, operationName: string, variables: Record<string, unknown>) {
   try {
     const result = await fetch(
@@ -29,6 +29,8 @@ async function fetchGraphQL(operationsDoc: string, operationName: string, variab
   }
 }
 
+// Contains all the relevant GraphQL queries for all the functions below
+// NOTE: Most of these queries serve as helper functions for fetchBooks
 const operationsDoc = `
   query dataBookCategories {
     book_categories {
@@ -134,7 +136,9 @@ const operationsDoc = `
   }
 `
 
-const fetchBookCategories = async (_: Request, res: Response) => {
+// Inserts all book categories from Hardcover to the RDBMS
+// ** DISCLAIMER: THIS ONLY SERVES AS A TEST FUNCTION TO TEST IF THE API REQUEST SUCCEEDS **
+const insertBookCategories = async (_: Request, res: Response) => {
   try {
     const instance = await pool.connect()
   
@@ -161,7 +165,14 @@ const fetchBookCategories = async (_: Request, res: Response) => {
   }
 }
 
-const fetchBooks = async (_: Request, res: Response) => {
+// Inserts all books from Hardcover's API to the RDBMS
+/* 
+  The code is structured that allows bridge entities in our database.
+  We have implemented triggers to ensure that any entries that are inserted into the books table
+  are also inserted into authors and tags table. Since Hardcover's API contains millions of books and authors,
+  it would be horribly unfeasible if we pulled ALL of the data, so I limited the entries to up to 100 books.
+*/
+const insertBooks = async (_: Request, res: Response) => {
   try {
     const instance = await pool.connect()
 
@@ -172,6 +183,7 @@ const fetchBooks = async (_: Request, res: Response) => {
       const taggingsArr: Array<number> = []
       const publishersSet: Array<number> = []
 
+      // Iterates through every book entry in the books JSON pulled from Hardcover
       for (const book of books) {        
         const { contributions, taggings } = book
         const publishers: Array<number | null | undefined> = [
@@ -184,6 +196,9 @@ const fetchBooks = async (_: Request, res: Response) => {
         for (const c of contributions)  {
           const id = c.author_id
           
+          // Treating the array as a set. Only allow values that are not present in the array yet.
+          // This conditional serves as a command to add unique authors to the authors table
+          // There is a trigger in place that automically adds a pair of this author's id with the current book's id to ensure many-to-many relationships
           if (!authorsArr.includes(id)) {
             const { data: { authors } } = await fetchGraphQL(operationsDoc, "dataAuthors", { authorId: id })
             const foundAuthor: Author = authors[0]
@@ -202,9 +217,12 @@ const fetchBooks = async (_: Request, res: Response) => {
           }
         }
         
+        
         for (const t of taggings) {
           const id = t.tag_id
-          
+
+          // Similar to the authors loop above, but now working with all book tags instead
+          // For both conditionals, if even the condition fails, each book will have a tag or author id that will be added as a pair in bridge entities
           if (!taggingsArr.includes(id)) {
             const { data: { tags } } = await fetchGraphQL(operationsDoc, "dataTags", { tagId: id })
             const foundTag: Tag = tags[0]    
@@ -225,6 +243,9 @@ const fetchBooks = async (_: Request, res: Response) => {
 
 
         for (const p of publishers) {
+          // Similar to the previous 2 loops, but now working with publishers
+          // There is no concrete field for publishers, since many book formats have different publishers
+          // See publishers array for references on how publishers are structured
           if (p && !publishersSet.includes(p)) {
             const { data: { publishers } } = await fetchGraphQL(operationsDoc, "dataPublishers", { publisherId: p })
             const foundPublisher = publishers[0]
@@ -289,7 +310,10 @@ const fetchBooks = async (_: Request, res: Response) => {
   }
 }
 
-const fetchStatuses = async (_: Request, res: Response) => {
+
+// Inserts all book statuses from Hardcover to the RDBMS
+// ** DISCLAIMER: THIS ONLY SERVES AS A TEST FUNCTION TO TEST IF THE API REQUEST SUCCEEDS **
+const insertStatuses = async (_: Request, res: Response) => {
   try {
     const instance = await pool.connect()
     
@@ -315,7 +339,9 @@ const fetchStatuses = async (_: Request, res: Response) => {
   }
 }
 
-const fetchTags = async (_: Request, res: Response) => {
+// Inserts all book tags from Hardcover to the RDBMS
+// ** DISCLAIMER: THIS ONLY SERVES AS A TEST FUNCTION TO TEST IF THE API REQUEST SUCCEEDS **
+const insertTags = async (_: Request, res: Response) => {
   try {
     const instance = await pool.connect()
 
@@ -335,7 +361,9 @@ const fetchTags = async (_: Request, res: Response) => {
   
 } 
 
-const fetchAuthors = async (_: Request, res: Response) => {
+// Inserts all book categories from Hardcover to the RDBMS
+// ** DISCLAIMER: THIS ONLY SERVES AS A TEST FUNCTION TO TEST IF THE API REQUEST SUCCEEDS **
+const insertAuthors = async (_: Request, res: Response) => {
   try {
     const instance = await pool.connect()
 
@@ -359,10 +387,11 @@ const fetchAuthors = async (_: Request, res: Response) => {
   } catch (err: any) {
     console.error(err.message)
   }
-  
 }
 
-const fetchPublishers = async (_: Request, res: Response) => {
+// Inserts all book publishers from Hardcover to the RDBMS
+// ** DISCLAIMER: THIS ONLY SERVES AS A TEST FUNCTION TO TEST IF THE API REQUEST SUCCEEDS **
+const insertPublishers = async (_: Request, res: Response) => {
   try {
     const instance = await pool.connect()
 
@@ -390,7 +419,7 @@ const fetchPublishers = async (_: Request, res: Response) => {
   
 }
 
-const fetchReviews = async (_: Request, res: Response) => {
+const insertReviews = async (_: Request, res: Response) => {
   try {
     const { data } = await fetchGraphQL(operationsDoc, "dataReviews", {})
     res.json({ data })
@@ -400,11 +429,11 @@ const fetchReviews = async (_: Request, res: Response) => {
 }
 
 export {
-  fetchBookCategories,
-  fetchBooks,
-  fetchStatuses,
-  fetchTags,
-  fetchAuthors,
-  fetchPublishers,
-  fetchReviews
+  insertBookCategories,
+  insertBooks,
+  insertStatuses,
+  insertTags,
+  insertAuthors,
+  insertPublishers,
+  insertReviews
 }
