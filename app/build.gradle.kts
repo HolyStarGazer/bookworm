@@ -35,7 +35,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.retrofit2.gson)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.recyclerview)
