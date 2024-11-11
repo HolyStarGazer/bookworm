@@ -13,12 +13,23 @@ import androidx.navigation.Navigation;
 
 import edu.utsa.cs3773.bookworm.R;
 
+/**
+ * Fragment that displays the review editor page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_review_editor.xml"
+ */
 public class ReviewEditorFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
     private FragmentManager fragmentManager;
     private Toolbar toolbar;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the review editor page layout.
+     */
     public ReviewEditorFragment() {
         super(R.layout.fragment_review_editor);
     }

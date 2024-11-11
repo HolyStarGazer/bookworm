@@ -8,6 +8,12 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+/**
+ * Dialog fragment that provides the specifications for the basic yes/no alert dialogs used in various places throughout the application.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ */
 public class ConfirmDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private FragmentManager fragmentManager;

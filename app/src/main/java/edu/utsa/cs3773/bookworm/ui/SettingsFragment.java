@@ -22,6 +22,13 @@ import edu.utsa.cs3773.bookworm.MainActivity;
 import edu.utsa.cs3773.bookworm.R;
 import edu.utsa.cs3773.bookworm.model.User;
 
+/**
+ * Fragment that displays the settings page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_settings.xml"
+ */
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
@@ -33,6 +40,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private Button emailButton;
     private User user;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the settings page layout.
+     */
     public SettingsFragment() {
         super(R.layout.fragment_settings);
     }

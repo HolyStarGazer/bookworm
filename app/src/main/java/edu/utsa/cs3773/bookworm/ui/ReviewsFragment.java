@@ -25,6 +25,14 @@ import java.util.ArrayList;
 import edu.utsa.cs3773.bookworm.R;
 import edu.utsa.cs3773.bookworm.model.Review;
 
+/**
+ * Fragment that displays the reviews page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_reviews.xml"
+ * @see "res/menu/review_dropdown.xml"
+ */
 public class ReviewsFragment extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private static final int PER_PAGE = 10;
 
@@ -37,6 +45,10 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
     private ArrayList<ReviewListingView> listings;
     private int prevButtonVisibility = View.VISIBLE, nextButtonVisibility = View.VISIBLE;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the reviews page layout.
+     */
     public ReviewsFragment() {
         super(R.layout.fragment_reviews);
     }
@@ -100,6 +112,15 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener, P
         }
     }
 
+    /**
+     * Populates this fragment with a single page of review listings, generated from the provided array of review data.
+     * Each element of the provided array is used to initialize a new review listing, which is then added to this fragment's freshly cleared <code>listingLayout</code>
+     * view group and <code>listings</code> array list. This fragment's <code>firstListing</code> and <code>lastListing</code> review listing objects are set to
+     * reference the first and last listings created, respectively.
+     *
+     * @param numReviews    the length of <code>reviews</code>
+     * @param reviews       a review array containing the data to use in initializing review listings
+     */
     private void fetchPage(int numReviews, Review[] reviews) {
         listingLayout.removeAllViews();
         listings = new ArrayList<ReviewListingView>();

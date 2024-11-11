@@ -17,12 +17,23 @@ import androidx.navigation.Navigation;
 import edu.utsa.cs3773.bookworm.MainActivity;
 import edu.utsa.cs3773.bookworm.R;
 
+/**
+ * Fragment that displays the change email page.
+ *
+ * @author Gavin C Wilson
+ * @version %I% %G%
+ * @see "res/layout/fragment_change_email.xml"
+ */
 public class ChangeEmailFragment extends Fragment implements View.OnClickListener {
 
     private NavController navController;
     private FragmentManager fragmentManager;
     private Toolbar toolbar;
 
+    /**
+     * Class constructor.
+     * Uses the resource ID of the change email page layout.
+     */
     public ChangeEmailFragment() {
         super(R.layout.fragment_change_email);
     }
