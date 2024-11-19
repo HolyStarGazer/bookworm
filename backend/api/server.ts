@@ -1,12 +1,14 @@
 import dotenv from "dotenv"
 
 if (process.env.NODE_ENV !== "production")
-dotenv.config()
+  dotenv.config()
 
 import express from "express"
 const app = express()
 
 import extRouter from "./routers/extRouter"
+import apiRouter from "./routers/apiRouter"
+import authRouter from "./routers/authRouter"
 import showContentNotFound from "../middleware/notFound"
 import fetchDBSample from "../middleware/connect"
 
@@ -22,6 +24,10 @@ app.use("^/$", fetchDBSample)
 */
 // a route for inserting external data to our database
 app.use("^/ext", extRouter)
+
+app.use("^/api", apiRouter)
+
+app.use("^/auth", authRouter)
 
 // If user enters an invalid path, show ERROR JSON message with a status of 404
 app.use("*", showContentNotFound)

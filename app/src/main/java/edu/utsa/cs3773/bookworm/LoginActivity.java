@@ -2,11 +2,16 @@ package edu.utsa.cs3773.bookworm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import org.json.JSONException;
+
+import edu.utsa.cs3773.bookworm.model.APIHandler;
+import edu.utsa.cs3773.bookworm.model.SecureStorage;
 import edu.utsa.cs3773.bookworm.ui.login.ForgotPasswordFragment;
 import edu.utsa.cs3773.bookworm.ui.login.LoginFragment;
 import edu.utsa.cs3773.bookworm.ui.login.SignUpFragment;
@@ -25,6 +30,12 @@ public class LoginActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             showLoginFragment();
         }
+
+        APIHandler api = APIHandler.getInstance();
+        SecureStorage storage = SecureStorage.getPreferences(this);
+        SecureStorage.JWTToken token = api.registerUser("testing123@yahoo.com", "test123", "password123");
+
+        storage.setJwtToken(token);
     }
 
     public void showLoginFragment() {

@@ -35,6 +35,8 @@ android {
 }
 
 dependencies {
+    implementation (libs.auth0.java.jwt)
+    implementation (libs.security.crypto.v110alpha06)
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.gson)
     implementation(libs.appcompat)
