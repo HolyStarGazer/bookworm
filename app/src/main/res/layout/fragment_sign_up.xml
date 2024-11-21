@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_gravity="center"
+    android:background="@drawable/bookworm_background_light"
     android:padding="16dp">
 
     <ScrollView
@@ -13,64 +11,145 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <LinearLayout
+        <!-- CardView for the form -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="80dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:padding="16dp"
+            android:backgroundTint="@color/material_dynamic_neutral95" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign Up"
-                android:textSize="24sp"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="16dp" />
-
-            <EditText
-                android:id="@+id/signupUsernameEditText"
+            <!-- Vertical Layout for form -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
 
-            <EditText
-                android:id="@+id/signupPasswordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:layout_marginBottom="0dp" />
+                <!-- Title -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:layout_margin="12dp"
+                    android:padding="12dp"/>
 
-            <TextView
-                android:id="@+id/passwordRequirementsTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/darker_gray"
-                android:padding="8dp"
-                android:text="Password requirements:\n• 8+ characters\n• 1+ uppercase letter\n• 1+ lowercase letter\n• 1+ number\n• 1+ special character (e.g. !@#$%^&amp;*)" />
+                <!-- Username -->
+                <EditText
+                    android:id="@+id/signupUsernameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_round"
+                    android:hint="Username"
+                    android:padding="12dp"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp" />
 
-            <Button
-                android:id="@+id/signupButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sign Up"
-                android:layout_marginBottom="16dp" />
+                <!-- Password -->
+                <EditText
+                    android:id="@+id/signupPasswordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_round"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp" />
 
-            <TextView
-                android:id="@+id/signUpLoginLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Already have an account? Log in"
-                android:textColor="@color/purple_500"
-                android:layout_gravity="center_horizontal"
-                android:clickable="true"
-                android:focusable="true" />
+                <!-- Confirm Password -->
+                <EditText
+                    android:id="@+id/signupPasswordConfirmEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_round"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp" />
 
-        </LinearLayout>
+                <!-- Password Requirements -->
+                <TextView
+                    android:id="@+id/passwordRequirements"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:text="\tPassword Requirements:"/>
+                <TextView
+                    android:id="@+id/passwordRequirementsLength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:paddingHorizontal="8dp"
+                    android:text="\tAt least 8 characters" />
+
+                <TextView
+                    android:id="@+id/passwordRequirementsUppercase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:paddingHorizontal="8dp"
+                    android:text="\tContains an uppercase letter" />
+
+                <TextView
+                    android:id="@+id/passwordRequirementsLowercase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:paddingHorizontal="8dp"
+                    android:text="\tContains a lowercase letter" />
+
+                <TextView
+                    android:id="@+id/passwordRequirementsDigit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:paddingHorizontal="8dp"
+                    android:text="\tContains a digit (0 - 9)" />
+
+                <TextView
+                    android:id="@+id/passwordRequirementsSymbol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:paddingHorizontal="8dp"
+                    android:text="\tContains a symbol (!@#$%^&amp;*)" />
+
+                <Button
+                    android:id="@+id/signupButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up"
+                    android:textStyle="bold"
+                    android:layout_margin="16dp" />
+
+                <TextView
+                    android:id="@+id/signUpLoginLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account? Log in"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingBottom="24dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </ScrollView>
 

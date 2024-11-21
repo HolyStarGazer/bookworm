@@ -41,7 +41,7 @@ public class EmailConfirmationFragment extends Fragment implements View.OnClickL
         navController = Navigation.findNavController(view);
         toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setVisibility(View.GONE);
-        ((TextView)view.findViewById(R.id.email_confirmation_body)).setText("\nIt was sent from " + getResources().getString(R.string.accounts_email_address));
+        ((TextView)view.findViewById(R.id.email_confirmation_body)).setText(getResources().getString(R.string.accounts_email_address));
         view.findViewById(R.id.email_confirmation_ok_button).setOnClickListener(this);
     }
 

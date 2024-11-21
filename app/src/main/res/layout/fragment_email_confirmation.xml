@@ -4,46 +4,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
+    <!-- CardView for the form -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/material_dynamic_neutral95"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="We've emailed you a\nconfirmation link"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnBackground"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/email_confirmation_body"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="\nIt was sent from "
-            android:textColor="?attr/colorOnBackground"
-            android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="We have sent you a\nconfirmation email"
+                android:textAlignment="center"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_margin="12dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Once you've received it, click it\nto enable account recovery.\n"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnBackground"
-            android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="It was sent to:"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/email_confirmation_ok_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OK" />
+            <TextView
+                android:id="@+id/email_confirmation_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnBackground"
+                android:hint="@string/accounts_email_address"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:padding="12dp"/>
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Once you have received the email,\n open it to enable account recovery."
+                android:textAlignment="center"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/email_confirmation_ok_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:layout_margin="16dp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

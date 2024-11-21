@@ -17,69 +17,86 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
-            <LinearLayout
+            <!-- CardView for the form -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="6sp">
-
-                <TextView
-                    android:id="@+id/review_editor_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="username"
-                    android:textColor="?attr/colorOnBackground"
-                    android:textSize="24sp" />
-
-                <RatingBar
-                    android:id="@+id/review_editor_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:progressBackgroundTint="?attr/colorSecondaryVariant"
-                    android:progressTint="?attr/colorPrimary"
-                    android:stepSize="1" />
-
-                <EditText
-                    android:id="@+id/review_editor_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/textbox"
-                    android:gravity="start|top"
-                    android:hint="Write your review"
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:padding="6sp"
-                    android:textColor="?attr/colorOnBackground"
-                    android:textColorHint="?attr/colorAccent"
-                    android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="160dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:padding="16dp"
+                android:backgroundTint="@color/material_dynamic_neutral95" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:paddingHorizontal="6sp">
 
-                    <Button
-                        android:id="@+id/review_editor_save_button"
+                    <TextView
+                        android:id="@+id/review_editor_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="username"
+                        android:textColor="?attr/colorOnBackground"
+                        android:textSize="24sp"
+                        android:padding="12dp"/>
+
+                    <RatingBar
+                        android:id="@+id/review_editor_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="12sp"
-                        android:text="Save"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textSize="14sp" />
+                        android:numStars="5"
+                        android:progressBackgroundTint="?attr/colorSecondaryVariant"
+                        android:progressTint="?attr/colorPrimary"
+                        android:stepSize="1"
+                        android:paddingVertical="12dp"/>
 
-                    <Button
-                        android:id="@+id/review_editor_cancel_button"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/review_editor_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Cancel"
-                        android:textColor="?attr/colorOnPrimary"
-                        android:textSize="14sp" />
+                        android:background="@drawable/edit_text_round"
+                        android:gravity="start|top"
+                        android:hint="Write your review"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:padding="12dp"
+                        android:textColor="?attr/colorOnBackground"
+                        android:textColorHint="?attr/colorAccent"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <Button
+                            android:id="@+id/review_editor_save_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="12sp"
+                            android:text="Save"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/review_editor_cancel_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cancel"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </ScrollView>
     </LinearLayout>
 

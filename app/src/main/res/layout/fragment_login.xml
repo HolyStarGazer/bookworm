@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_gravity="center"
+    android:background="@drawable/bookworm_background_light"
     android:padding="16dp">
 
     <ScrollView
@@ -14,68 +12,93 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <LinearLayout
+        <!-- CardView for the form -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="140dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:padding="16dp"
+            android:backgroundTint="@color/material_dynamic_neutral95" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                android:textSize="24sp"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="16dp" />
-
-            <EditText
-                android:id="@+id/usernameEditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Username"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
 
-            <EditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:layout_marginBottom="16dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="12dp"
+                    android:padding="12dp" />
 
-            <Button
-                android:id="@+id/loginButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                android:layout_marginBottom="16dp" />
+                <EditText
+                    android:id="@+id/usernameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Username"
+                    android:background="@drawable/edit_text_round"
+                    android:padding="12dp"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp" />
 
-            <TextView
-                android:id="@+id/forgotPasswordLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Forgot Password"
-                android:textColor="@color/purple_500"
-                android:layout_marginBottom="8dp"
-                android:clickable="true"
-                android:focusable="true" />
+                <EditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:background="@drawable/edit_text_round"
+                    android:padding="12dp"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp" />
 
-            <TextView
-                android:id="@+id/signUpLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Don't have an Account? Sign up"
-                android:textColor="@color/purple_500"
-                android:clickable="true"
-                android:focusable="true" />
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textStyle="bold"
+                    android:layout_margin="16dp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/forgotPasswordLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Forgot Password"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/signUpLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Don't have an Account? Sign up"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingBottom="12dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </ScrollView>
 

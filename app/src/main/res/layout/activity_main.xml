@@ -96,6 +96,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_container"
+    android:background="@drawable/bookworm_background_light"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
