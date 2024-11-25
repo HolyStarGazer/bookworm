@@ -36,6 +36,7 @@
     </string-array>
 
     <string name="accounts_email_address">email.address@example.com</string>
+    <string name="auth_error">Failed to authenticate. Try again in 5 seconds.</string>
 
     <string-array name="settings_length_units">
         <item>words</item>

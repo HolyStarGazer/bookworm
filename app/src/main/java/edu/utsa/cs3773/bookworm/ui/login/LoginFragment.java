@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import edu.utsa.cs3773.bookworm.LoginActivity;
 import edu.utsa.cs3773.bookworm.R;
+import edu.utsa.cs3773.bookworm.model.api.APIHandler;
 
 public class LoginFragment extends Fragment {
 
@@ -46,10 +47,12 @@ public class LoginFragment extends Fragment {
 
     private void login(String username, String password) {
         if (!username.isEmpty() && !password.isEmpty()) {
-            ((LoginActivity) getActivity()).login(username, password);
-        } else {
-            Toast.makeText(getContext(), "Please enter both username and password", Toast.LENGTH_SHORT).show();
+            APIHandler.loginUser(getActivity(), getContext(), username, password);
+            return;
         }
+
+        // Invalid user input
+        Toast.makeText(getContext(), "Please enter both username and password", Toast.LENGTH_SHORT).show();
     }
 
     private void navigateToSignUp() {

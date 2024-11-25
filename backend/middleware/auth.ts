@@ -8,47 +8,30 @@ export const registerNewUser = async (req: Request, res: Response) => {
     const instance = await pool.connect()
 
     try {
-      const { email, username, password } = req.body
-
-      console.log(req.body)
-      
+      const { username, password } = req.body      
       
       if (!(username && password)) {
-        res.status(400).json({ ERROR: "Username or password is missing." })
+        res.status(400).json({ error: "Username or password is missing." })
         return
       }
 
       const { rows: foundUsername } = await instance.query("SELECT username FROM users WHERE username = $1", [username])
 
       if (foundUsername.length > 0) {
-        res.status(409).json({ CONFLICT: "Username already exists." })
-        return
-      }
-
-      const { rows: foundEmail } = await instance.query("SELECT email FROM users WHERE email = $1", [email])
-
-      if (foundEmail.length > 0) {
-        res.status(409).json({ CONFLICT: "Email already exists." })
+        res.status(409).json({ error: "Username already exists." })
         return
       }
 
       const hashedPassword = await argon2.hash(password)
 
-      await instance.query("INSERT INTO users(email, username, password) VALUES ($1, $2, $3)", [email, username, hashedPassword])
+      await instance.query("INSERT INTO users(username, password) VALUES ($1, $2)", [username, hashedPassword])
 
-      // Generate a JWT token on account creation
-      const refreshToken = jwt.sign(
-        { username },
-        process.env.REFRESH_TOKEN_SECRET as string,
-        { expiresIn: "2d" }
-      )
-
-      res.json({ "token": refreshToken })
+      res.json({ success: "User successfully created!" })
     } catch (err) {
-      res.status(500).json({ ERROR: err instanceof Error ? err.message : "Something went wrong." })
+      res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
     }
   } catch (err) {
-    res.status(500).json({ ERROR: err instanceof Error ? err.message : "Something went wrong." })
+    res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
   }
 }
 
@@ -60,15 +43,16 @@ export const loginUser = async (req: Request, res: Response) => {
       const { username, password } = req.body
 
       if (!(username && password)) {
-        res.status(400).json({ ERROR: "Username or password is missing." })
+        res.status(400).json({ error: "Username or password is missing." })
         return
       }
       
       const { rows: passwordResults } = await instance.query("SELECT password FROM users WHERE username = $1", [username])
-      const passwordMatch = await argon2.verify(passwordResults[0], password)
+      const hashedPassword = passwordResults[0].password
+      const passwordMatch = await argon2.verify(hashedPassword, password)
       
       if (!(passwordResults.length > 0 && passwordMatch)) {
-        res.status(401).json({ ERROR: "Username or password is incorrect." })
+        res.status(401).json({ error: "Username or password is incorrect." })
         return
       }
 
@@ -80,12 +64,12 @@ export const loginUser = async (req: Request, res: Response) => {
 
       res.json({ "token": refreshToken })
     } catch (err) {
-      res.status(500).json({ ERROR: err instanceof Error ? err.message : "Something went wrong." })
+      res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
     } finally {
       instance.release()
     }
   } catch (err: any) {
-    res.status(500).json({ ERROR: err instanceof Error ? err.message : "Something went wrong." })
+    res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
   }
 }
 
@@ -93,7 +77,7 @@ export const createNewAccessToken = (req: Request, res: Response) => {
   const { refreshToken } = req.body
 
   if (!refreshToken) {
-    res.status(401).json({ ERROR: "A refresh token is required to refresh an access token" })
+    res.status(401).json({ error: "A refresh token is required to refresh an access token" })
     return
   }
   
@@ -108,6 +92,6 @@ export const createNewAccessToken = (req: Request, res: Response) => {
     )
     res.json({ "accessToken": refreshedAccessToken })
   } catch (err) {
-    res.status(500).json({ ERROR: err instanceof Error ? err.message : "Something went wrong." })
+    res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
   }
 }

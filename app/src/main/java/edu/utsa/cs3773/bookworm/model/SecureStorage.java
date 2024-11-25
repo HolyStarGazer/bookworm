@@ -1,14 +1,27 @@
 package edu.utsa.cs3773.bookworm.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
+import java.util.Objects;
+
+import edu.utsa.cs3773.bookworm.BuildConfig;
+import edu.utsa.cs3773.bookworm.model.api.APIResponse;
 
 // Static class that provides abstraction for storing JWT tokens securely
 public class SecureStorage {
     private EncryptedSharedPreferences esf;
-    private JWTToken jwtToken;
 
     private static SecureStorage secureStorage;
     // Disable class declaration
@@ -30,19 +43,51 @@ public class SecureStorage {
         }
     }
 
-    public static class JWTToken {
+    public static class JWTToken extends APIResponse {
         private String token;
+        private DecodedJWT decryptedToken;
+        private final JWTVerifier jwtVerifier;
 
-        public JWTToken(String token) {
-            this.token = token;
+        public JWTToken() {
+            Log.d("Secret Refresh", BuildConfig.REFRESH_TOKEN_SECRET);
+            jwtVerifier = JWT.require(Algorithm.HMAC256(BuildConfig.REFRESH_TOKEN_SECRET))
+                .acceptLeeway(60L)
+                .build();
         }
 
-        public String getToken() {
+//        public JWTToken(String token) {
+//            signedToken = token;
+//        }
+
+        public String getSignedToken() {
             return token;
         }
 
+        public DecodedJWT getDecodedToken() {
+            return decryptedToken;
+        }
+
         public void setToken(String token) {
-            this.token = token;
+            try {
+                this.token = token;
+                Log.d("Signed Token", "getSignedToken(): " + token);
+                decryptedToken = jwtVerifier.verify(token);
+                Log.d("Token Header", "Token Header: " + decryptedToken.getHeader());
+                Log.d("Token Payload", "Token Payload: " + decryptedToken.getPayload());
+                Log.d("Token Signature", "Token Signature: " + decryptedToken.getSignature());
+                Log.d("Token ID", "Token ID: " + decryptedToken.getSubject());
+            } catch (JWTVerificationException e) {
+                Log.e("JWT Error", Objects.requireNonNull(e.getMessage()));
+            }
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "Signed Token: " + getSignedToken() +
+                    "\nHeader: " + decryptedToken.getHeader() +
+                    "\nPayload: " + decryptedToken.getPayload() +
+                    "\nSignature: " + decryptedToken.getSignature();
         }
     }
 
@@ -53,15 +98,21 @@ public class SecureStorage {
         return secureStorage;
     }
 
-    public void setJwtToken(JWTToken addedJwtToken) {
-        jwtToken = addedJwtToken;
+    private void insertToStorage(SharedPreferences.Editor editor, String key, String value) {
+        // Invalidate old entry
+        if (esf.contains(key))
+            editor.remove(key);
+
+        editor.putString(key, value);
+        editor.apply();
     }
 
-    public JWTToken getJwtToken() {
-        return jwtToken;
-    }
+    public void addTokenToStorage(DecodedJWT decodedToken) {
+        SharedPreferences.Editor esfEditor = esf.edit();
 
-    public void addTokenToStorage() {
-        esf.edit().putString("JWT_REFRESH_TOKEN", jwtToken.getToken()).apply();
+        insertToStorage(esfEditor, "REFRESH_TOKEN_STRING", decodedToken.getToken());
+        insertToStorage(esfEditor, "REFRESH_TOKEN_HEADER", decodedToken.getHeader());
+        insertToStorage(esfEditor, "REFRESH_TOKEN_PAYLOAD", decodedToken.getPayload());
+        insertToStorage(esfEditor, "REFRESH_TOKEN_SIGNATURE", decodedToken.getSignature());
     }
 }

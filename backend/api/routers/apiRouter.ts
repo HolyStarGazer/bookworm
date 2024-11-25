@@ -2,7 +2,7 @@ import express from "express"
 
 const router = express.Router()
 
-/* TO IMPLEMENT IN THE NEXT SPRINT! */
-// Will fetch data from OUR database for the frontend application
+// TODO: Create simple database fetching logic for users
+router.get("/books")
 
 export default router

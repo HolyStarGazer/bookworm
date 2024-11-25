@@ -16,10 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import java.util.Objects;
-
 import edu.utsa.cs3773.bookworm.LoginActivity;
 import edu.utsa.cs3773.bookworm.R;
+import edu.utsa.cs3773.bookworm.model.api.APIHandler;
 
 public class SignUpFragment extends Fragment {
 
@@ -75,24 +74,26 @@ public class SignUpFragment extends Fragment {
 
             if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
-            } else {
-                if (!password.equals(confirmPassword)) {
-                    Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (!checkPassword(password)) {
-                        Toast.makeText(getContext(), "Password does not meet requirements", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // TODO - Handle Database logic
-                        Toast.makeText(getContext(), "Account created. Redirecting you to login page", Toast.LENGTH_SHORT).show();
-                        ((LoginActivity) getActivity()).showLoginFragment();
-                    }
-                }
+                return;
             }
+
+            if (!password.equals(confirmPassword)) {
+                Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!checkPassword(password)) {
+                Toast.makeText(getContext(), "Password does not meet requirements", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // All other tests pass
+            // Attempt to register user
+            // See class declaration to understand inner mechanics
+            APIHandler.registerUser(getActivity(), getContext(), username, password);
         });
 
-        loginLink.setOnClickListener(v -> {
-            ((LoginActivity) getActivity()).showLoginFragment();
-        });
+        loginLink.setOnClickListener(v -> ((LoginActivity) getActivity()).showLoginFragment());
 
         return view;
     }
@@ -107,10 +108,8 @@ public class SignUpFragment extends Fragment {
          */
 
         // Check if password length is at least 8 characters
-        if (password.length() < 8) {
-
+        if (password.length() < 8)
             return false;
-        }
 
         // Check for at least one uppercase letter
         if (!password.matches(".*[A-Z].*"))
@@ -125,10 +124,7 @@ public class SignUpFragment extends Fragment {
             return false;
 
         // Check for at least one special character (non-alphanumeric)
-        if (!password.matches(".*[!@#$%^&*].*"))
-            return false;
-
-        return true;
+        return password.matches(".*[!@#$%^&*].*");
     }
 
     private void updateRequirements(TextView textView, boolean isValid) {

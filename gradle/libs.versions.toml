@@ -15,7 +15,6 @@ navigationFragment = "2.8.4"
 navigationUi = "2.8.4"
 activity = "1.9.3"
 retrofitVersion = "2.11.0"
-securityCrypto = "1.0.0"
 securityCryptoVersion = "1.1.0-alpha06"
 
 [libraries]

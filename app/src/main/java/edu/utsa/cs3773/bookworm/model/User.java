@@ -15,7 +15,6 @@ public class User {
     /* FOR PASSWORD HASHING (REPLACE password)
     private String passwordHashed;
      */
-    private String salt;
     private String email;
     private boolean isAdmin;
     private BookCollections bookCollections;
