@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import edu.utsa.cs3773.bookworm.LoginActivity;
 import edu.utsa.cs3773.bookworm.R;
-import edu.utsa.cs3773.bookworm.model.api.APIHandler;
+import edu.utsa.cs3773.bookworm.model.api.AuthHandler;
 
 public class SignUpFragment extends Fragment {
 
@@ -90,7 +90,7 @@ public class SignUpFragment extends Fragment {
             // All other tests pass
             // Attempt to register user
             // See class declaration to understand inner mechanics
-            APIHandler.registerUser(getActivity(), getContext(), username, password);
+            AuthHandler.registerUser(getActivity(), getContext(), username, password);
         });
 
         loginLink.setOnClickListener(v -> ((LoginActivity) getActivity()).showLoginFragment());

@@ -67,7 +67,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.settings_password_button).setOnClickListener(this);
         view.findViewById(R.id.settings_prefs_apply_button).setOnClickListener(this);
         view.findViewById(R.id.settings_prefs_cancel_button).setOnClickListener(this);
-        user = ((MainActivity)getActivity()).getLoggedInUser();
+        user = ((MainActivity)getActivity()).getCurrentUser();
         if (user.getEmail() != null && !user.getEmail().isEmpty()) {
             TextView field = view.findViewById(R.id.settings_current_email);
             field.setText("\t\t\tCurrently: " + user.getEmail());

@@ -50,10 +50,12 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "REFRESH_TOKEN_SECRET", "\"${keystoreProperties["REFRESH_TOKEN_SECRET"]}\"")
+            buildConfigField("String", "ACCESS_TOKEN_SECRET", "\"${keystoreProperties["ACCESS_TOKEN_SECRET"]}\"")
             buildConfigField("String", "API_DOMAIN", "\"${keystoreProperties["API_DOMAIN"]}\"")
         }
         debug {
             buildConfigField("String", "REFRESH_TOKEN_SECRET", "\"${keystoreProperties["REFRESH_TOKEN_SECRET"]}\"")
+            buildConfigField("String", "ACCESS_TOKEN_SECRET", "\"${keystoreProperties["ACCESS_TOKEN_SECRET"]}\"")
             buildConfigField("String", "API_DOMAIN", "\"${keystoreProperties["API_DOMAIN"]}\"")
         }
     }
@@ -67,6 +69,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.argon2.jvm)
     implementation(libs.auth0.java.jwt)
     implementation(libs.security.crypto.v110alpha06)
     implementation(libs.retrofit2.retrofit)

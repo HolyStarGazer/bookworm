@@ -1,61 +1,50 @@
 package edu.utsa.cs3773.bookworm.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.List;
+import androidx.annotation.NonNull;
 
-public class User {
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
+
+public abstract class User {
     private final int id;
     private String username;
+    // Stores the HASHED PASSWORD
     private String password;
-    /* FOR PASSWORD HASHING (REPLACE password)
-    private String passwordHashed;
-     */
     private String email;
     private boolean isAdmin;
-    private BookCollections bookCollections;
 
-    public User (int id, String username, String password, String email) {
+    public User(int id, String username, String password, String email) {
         this.id = id;
         this.username = username;
-        this.password = password;
-        /* FOR PASSWORD HASHING
-        this.salt = generateSalt();
-        this.passwordHashed = hashPassword(password, this.salt);
-         */
+        this.password = hashPassword(password);
         this.email = email;
         this.isAdmin = false;
-        this.bookCollections = new BookCollections();
     }
 
-    /* FOR PASSWORD HASHING
-    private String generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] saltBytes = new byte[16];
-        random.nextBytes(saltBytes);
-        return Base64.getEncoder().encodeToString(saltBytes);
+    // For receiving responses from the backend
+    public static class Response {
+        public int id;
+        public String username;
+        public String email;
+        public boolean isAdmin;
     }
 
-    private String hashPassword(String password, String salt) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(salt.getBytes());
-            byte[] hashedBytes = md.digest(password.getBytes());
-            return Base64.getEncoder().encodeToString(hashedBytes);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error: Unable to hash password", e);
-        }
+    // FOR PASSWORD HASHING
+    private String hashPassword(@NonNull String plain) {
+        Argon2 argon2 = Argon2Factory.create();
+        char[] plainCharArr = plain.toCharArray();
+        String hash = argon2.hash(3, 65536, 1, plainCharArr);
+
+        // Immediately wipe plaintext array for an extra layer of security
+        argon2.wipeArray(plainCharArr);
+
+        return hash;
     }
 
-    public boolean verifyPassword(String password) {
-        String hashedAttempt = hashPassword(password, this.salt);
-        return hashedAttempt.equals(this.passwordHashed);
+    public boolean verifyPassword(String hashed, @NonNull String plain) {
+        Argon2 argon2 = Argon2Factory.create();
+        return argon2.verify(hashed, plain.toCharArray());
     }
-     */
 
     public int getId() {
         return id;
@@ -77,15 +66,21 @@ public class User {
         this.email = email;
     }
 
+    // Password is ALREADY HASHED
+    public String getPassword() {
+        return password;
+    }
+
+    // Assuming that the password is not hashed
+    public void setPassword(String password) {
+        this.password = hashPassword(password);
+    }
+
     public boolean isAdmin() {
         return isAdmin;
     }
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
-    }
-
-    public List<Book> getBooksByCategory(BookCollections.BookCategory category) {
-        return bookCollections.getBooksByCategory(category);
     }
 }

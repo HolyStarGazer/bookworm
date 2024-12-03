@@ -4,93 +4,85 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import java.util.Objects;
+import java.util.EnumMap;
+import java.util.Map;
 
 import edu.utsa.cs3773.bookworm.BuildConfig;
-import edu.utsa.cs3773.bookworm.model.api.APIResponse;
 
-// Static class that provides abstraction for storing JWT tokens securely
+// Singleton class that provides abstraction for storing JWT tokens securely
 public class SecureStorage {
+    public enum TokenType {
+        REFRESH, ACCESS
+    }
+
+    private static final Map<TokenType, String> tokenTypes = new EnumMap<>(TokenType.class);
+
+    // Static initializer block for populating EnumMap once at runtime
+    static {
+        tokenTypes.put(TokenType.REFRESH, BuildConfig.REFRESH_TOKEN_SECRET);
+        tokenTypes.put(TokenType.ACCESS, BuildConfig.ACCESS_TOKEN_SECRET);
+    }
+
     private EncryptedSharedPreferences esf;
 
     private static SecureStorage secureStorage;
     // Disable class declaration
     private SecureStorage(Context context) {
         try {
-            MasterKey masterKey = new MasterKey.Builder(context)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .build();
-
             esf = (EncryptedSharedPreferences) EncryptedSharedPreferences.create(
-                    context,
-                    "SECRET_SHARED_PREFS",
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                context,
+                "SECRET_SHARED_PREFS",
+                new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build(),
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static class JWTToken extends APIResponse {
-        private String token;
-        private DecodedJWT decryptedToken;
-        private final JWTVerifier jwtVerifier;
+    // For server responses
+    public static class Token {
+        public String token;
+    }
 
-        public JWTToken() {
-            Log.d("Secret Refresh", BuildConfig.REFRESH_TOKEN_SECRET);
-            jwtVerifier = JWT.require(Algorithm.HMAC256(BuildConfig.REFRESH_TOKEN_SECRET))
+    public static class JWTToken {
+        private final TokenType tokenType;
+        private DecodedJWT token;
+
+        public JWTToken(TokenType tokenType, String token) {
+            this.tokenType = tokenType;
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(tokenTypes.get(tokenType)))
                 .acceptLeeway(60L)
                 .build();
-        }
 
-//        public JWTToken(String token) {
-//            signedToken = token;
-//        }
-
-        public String getSignedToken() {
-            return token;
-        }
-
-        public DecodedJWT getDecodedToken() {
-            return decryptedToken;
-        }
-
-        public void setToken(String token) {
             try {
-                this.token = token;
-                Log.d("Signed Token", "getSignedToken(): " + token);
-                decryptedToken = jwtVerifier.verify(token);
-                Log.d("Token Header", "Token Header: " + decryptedToken.getHeader());
-                Log.d("Token Payload", "Token Payload: " + decryptedToken.getPayload());
-                Log.d("Token Signature", "Token Signature: " + decryptedToken.getSignature());
-                Log.d("Token ID", "Token ID: " + decryptedToken.getSubject());
-            } catch (JWTVerificationException e) {
-                Log.e("JWT Error", Objects.requireNonNull(e.getMessage()));
+                // Throws an exception if verification fails
+                this.token = verifier.verify(token);
+            } catch (Exception e) {
+                this.token = null;
+                Log.e("FAILURE", "Token is invalid");
             }
         }
 
-        @NonNull
-        @Override
-        public String toString() {
-            return "Signed Token: " + getSignedToken() +
-                    "\nHeader: " + decryptedToken.getHeader() +
-                    "\nPayload: " + decryptedToken.getPayload() +
-                    "\nSignature: " + decryptedToken.getSignature();
+        public DecodedJWT getDecoded() {
+            return token;
+        }
+
+        public String getTokenType() {
+            return tokenType.name();
         }
     }
 
+    // For instantiating SecureStorage for the first time
     public static SecureStorage getPreferences(Context context) {
         if (secureStorage == null)
             secureStorage = new SecureStorage(context);
@@ -98,21 +90,14 @@ public class SecureStorage {
         return secureStorage;
     }
 
-    private void insertToStorage(SharedPreferences.Editor editor, String key, String value) {
-        // Invalidate old entry
-        if (esf.contains(key))
-            editor.remove(key);
-
-        editor.putString(key, value);
-        editor.apply();
+    public EncryptedSharedPreferences getStorage() {
+        return esf;
     }
 
-    public void addTokenToStorage(DecodedJWT decodedToken) {
-        SharedPreferences.Editor esfEditor = esf.edit();
-
-        insertToStorage(esfEditor, "REFRESH_TOKEN_STRING", decodedToken.getToken());
-        insertToStorage(esfEditor, "REFRESH_TOKEN_HEADER", decodedToken.getHeader());
-        insertToStorage(esfEditor, "REFRESH_TOKEN_PAYLOAD", decodedToken.getPayload());
-        insertToStorage(esfEditor, "REFRESH_TOKEN_SIGNATURE", decodedToken.getSignature());
+    public void insertToStorage(String key, String value) {
+        SharedPreferences.Editor editor = esf.edit();
+        // Overwrites existing entry
+        editor.putString(key, value);
+        editor.apply();
     }
 }

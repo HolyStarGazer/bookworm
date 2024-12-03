@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import edu.utsa.cs3773.bookworm.model.SecureStorage;
 import edu.utsa.cs3773.bookworm.model.api.APIHandler;
 import edu.utsa.cs3773.bookworm.ui.login.ForgotPasswordFragment;
 import edu.utsa.cs3773.bookworm.ui.login.LoginFragment;
@@ -21,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         fragmentManager = getSupportFragmentManager();
+
+        // Initialize secure storage
+        SecureStorage.getPreferences(getApplicationContext());
 
         // Load the LoginFragment by default
         if (savedInstanceState == null) {

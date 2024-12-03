@@ -43,16 +43,13 @@ public class LibraryFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // Item click listener to open BookDetailFragment
-        adapter.setOnItemClickListener(new BookAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Book book) {
-                // Navigate to the BookDetailsFragment
-                Bundle bundle = new Bundle();
-                bundle.putInt("book_id", book.getId());
-                bundle.putBoolean("optionsVisible", true);
-                bundle.putInt("bottomNavigationVisibility", View.VISIBLE);
-                Navigation.findNavController(rootView).navigate(R.id.action_libraryFragment_to_bookDetailsFragment, bundle);
-            }
+        adapter.setOnItemClickListener(book -> {
+            // Navigate to the BookDetailsFragment
+            Bundle bundle = new Bundle();
+            bundle.putInt("book_id", book.getId());
+            bundle.putBoolean("optionsVisible", true);
+            bundle.putInt("bottomNavigationVisibility", View.VISIBLE);
+            Navigation.findNavController(rootView).navigate(R.id.action_libraryFragment_to_bookDetailsFragment, bundle);
         });
 
         return rootView;
@@ -60,13 +57,13 @@ public class LibraryFragment extends Fragment {
 
     private void populateBookCollections() {
         // Add some sample books to the collections
-        bookCollections.addBook(BookCollections.BookCategory.OWNED,
+        bookCollections.addBook(BookCollections.BookStatus.OWNED,
                 new Book(1, "Book 1"));
-        bookCollections.addBook(BookCollections.BookCategory.TO_READ,
+        bookCollections.addBook(BookCollections.BookStatus.TO_READ,
                 new Book(2, "Book 2"));
-        bookCollections.addBook(BookCollections.BookCategory.CURRENTLY_READING,
+        bookCollections.addBook(BookCollections.BookStatus.CURRENTLY_READING,
                 new Book(3, "Book 3"));
-        bookCollections.addBook(BookCollections.BookCategory.FAVORITES,
+        bookCollections.addBook(BookCollections.BookStatus.FAVORITES,
                 new Book(4, "Book 4"));
     }
 }

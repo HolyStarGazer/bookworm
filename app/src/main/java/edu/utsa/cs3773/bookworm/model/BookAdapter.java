@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,12 +17,26 @@ import java.util.List;
 
 import edu.utsa.cs3773.bookworm.R;
 
-public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
+// Enhanced adapter that only updates changes in the list without completely refreshing
+public class BookAdapter extends ListAdapter<Book, BookAdapter.BookViewHolder> {
 
     private List<Book> books;
     private OnItemClickListener onItemClickListener; // Custom listener
 
     public BookAdapter(List<Book> books) {
+        // Used for comparing changes in the old and new list
+        super(new DiffUtil.ItemCallback<>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull Book oldItem, @NonNull Book newItem) {
+                return oldItem.equals(newItem);
+            }
+
+            @Override
+            public boolean areContentsTheSame(@NonNull Book oldItem, @NonNull Book newItem) {
+                return (oldItem.getTitle().equals(newItem.getTitle())) && (oldItem.getCoverURL().equals(newItem.getCoverURL()));
+            }
+        });
+
         this.books = books;
     }
 
@@ -38,9 +54,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         // Use Glide to load book cover image
         Glide.with(holder.itemView.getContext())
-                .load(book.getCoverURL()) // Assuming coverURL is a URL
-                .placeholder(R.drawable.no_cover_image_found) // placeholder
-                .into(holder.bookCover);
+            .load(book.getCoverURL()) // Assuming coverURL is a URL
+            .placeholder(R.drawable.no_cover_image_found) // placeholder
+            .into(holder.bookCover);
 
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
@@ -77,6 +93,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     public void updateBooks(List<Book> newBooks) {
         this.books = newBooks;
-        notifyDataSetChanged(); // Notify the adapter to refresh the views
+        submitList(newBooks); // Notify the adapter to update only new changes
     }
 }

@@ -31,6 +31,9 @@
             android:layout_marginTop="4dp"
             android:text="Book Title"
             android:textSize="14sp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end"
+        />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

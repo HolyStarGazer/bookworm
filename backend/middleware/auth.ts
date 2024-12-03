@@ -3,6 +3,31 @@ import argon2 from "argon2"
 import { type Request, type Response } from "express"
 import jwt from "jsonwebtoken"
 
+export const getUser = async (req: Request, res: Response) => {
+  try {
+    const instance = await pool.connect()
+
+    try {
+      const { username } = req.params
+
+      if (!username) {
+        res.status(400).json({ error: "Username was not supplied." })
+        return
+      }
+
+      const { rows } = await instance.query('SELECT id, username, email, "isAdmin" FROM users WHERE username = $1', [username])
+
+      res.json(rows[0])
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
+    } finally {
+      instance.release()
+    }
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
+  }
+}
+
 export const registerNewUser = async (req: Request, res: Response) => {
   try {
     const instance = await pool.connect()
@@ -35,6 +60,7 @@ export const registerNewUser = async (req: Request, res: Response) => {
   }
 }
 
+// Refresh tokens are only created when the user logs in
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const instance = await pool.connect()
@@ -73,24 +99,30 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 }
 
+// For handling expired access tokens or creating an access token for the first time
 export const createNewAccessToken = (req: Request, res: Response) => {
-  const { refreshToken } = req.body
-
-  if (!refreshToken) {
-    res.status(401).json({ error: "A refresh token is required to refresh an access token" })
-    return
-  }
-  
   try {
-    // Will throw an error if token was not found
-    const decodedRefreshToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string) as Record<string, unknown>
-    
-    const refreshedAccessToken = jwt.sign(
-      { username: decodedRefreshToken.username },
-      process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: "15m" }
-    )
-    res.json({ "accessToken": refreshedAccessToken })
+    const refreshToken = req.get("authorization")
+
+    if (!refreshToken) {
+      res.status(401).json({ error: "A refresh token is required to refresh an access token" })
+      return
+    }
+
+    try {
+      // Will throw an error if token is invalid
+      const decodedRefreshToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string) as Record<string, unknown>
+      
+      const refreshedAccessToken = jwt.sign(
+        { username: decodedRefreshToken.username },
+        process.env.ACCESS_TOKEN_SECRET as string,
+        { expiresIn: "15m" }
+      )
+
+      res.json({ "token": refreshedAccessToken })
+    } catch (err) {
+      res.status(400).json({ error: "Malformed or invalid refresh token" })
+    }
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : "Something went wrong." })
   }

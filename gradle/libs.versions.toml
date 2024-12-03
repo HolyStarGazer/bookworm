@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.2"
+argon2Jvm = "2.11"
 glide = "4.15.1"
 javaJwtVersion = "4.4.0"
 junit = "4.13.2"
@@ -18,6 +19,7 @@ retrofitVersion = "2.11.0"
 securityCryptoVersion = "1.1.0-alpha06"
 
 [libraries]
+argon2-jvm = { module = "de.mkammerer:argon2-jvm", version.ref = "argon2Jvm" }
 auth0-java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwtVersion" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }

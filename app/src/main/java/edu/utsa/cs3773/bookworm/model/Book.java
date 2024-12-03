@@ -21,6 +21,41 @@ public class Book {
     private int words;
     private int chapters;
 
+    // Reduced book class for previewing in explore fragment
+    public static class Preview {
+        private final int id;
+
+        private final String title;
+        private final String image;
+
+        public Preview(int id, String title, String image) {
+            this.id = id;
+            this.title = title;
+            this.image = image;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public boolean equals(Object obj) {
+            // If they have the same reference
+            if (this == obj)
+                return true;
+            if (this.getClass() != obj.getClass())
+                return false;
+            Preview other = (Preview) obj;
+            return this.id == other.id;
+        }
+    }
 
     public Book (int id, String title) {
         this.id = id;
@@ -206,4 +241,15 @@ public class Book {
         return titleMatches && genreMatches && ratingMatches && priceMatches;
     }
 
+    // An id is unique to a book, so it can be safely compared here
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (getClass() != obj.getClass())
+            return false;
+
+        Book other = (Book) obj;
+        return id == other.getId();
+    }
 }

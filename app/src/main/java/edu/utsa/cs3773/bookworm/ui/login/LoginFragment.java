@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import edu.utsa.cs3773.bookworm.LoginActivity;
 import edu.utsa.cs3773.bookworm.R;
-import edu.utsa.cs3773.bookworm.model.api.APIHandler;
+import edu.utsa.cs3773.bookworm.model.api.AuthHandler;
 
 public class LoginFragment extends Fragment {
 
@@ -47,7 +47,7 @@ public class LoginFragment extends Fragment {
 
     private void login(String username, String password) {
         if (!username.isEmpty() && !password.isEmpty()) {
-            APIHandler.loginUser(getActivity(), getContext(), username, password);
+            AuthHandler.loginUser(getActivity(), getContext(), username, password);
             return;
         }
 

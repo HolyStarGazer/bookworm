@@ -63,7 +63,7 @@ public class ChangeEmailFragment extends Fragment implements View.OnClickListene
             //  update feedback field
             //else {
             //update backend
-            ((MainActivity)getActivity()).getLoggedInUser().setEmail(input.getText().toString());
+            ((MainActivity)getActivity()).getCurrentUser().setEmail(input.getText().toString());
             Bundle result = new Bundle();
             result.putBoolean("changed", true);
             fragmentManager.setFragmentResult("updateEmail", result);
