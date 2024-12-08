@@ -12,6 +12,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public class SecureStorage {
         tokenTypes.put(TokenType.ACCESS, BuildConfig.ACCESS_TOKEN_SECRET);
     }
 
+
     private EncryptedSharedPreferences esf;
 
     private static SecureStorage secureStorage;
@@ -38,27 +40,28 @@ public class SecureStorage {
     private SecureStorage(Context context) {
         try {
             esf = (EncryptedSharedPreferences) EncryptedSharedPreferences.create(
-                context,
-                "SECRET_SHARED_PREFS",
-                new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build(),
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                    context,
+                    "SECRET_SHARED_PREFS",
+                    new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build(),
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
     // For server responses
     public static class Token {
         public String token;
     }
 
-    public static class JWTToken {
+    public static class JsonWebToken {
         private final TokenType tokenType;
         private DecodedJWT token;
 
-        public JWTToken(TokenType tokenType, String token) {
+        public JsonWebToken(TokenType tokenType, String token) {
             this.tokenType = tokenType;
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(tokenTypes.get(tokenType)))
                 .acceptLeeway(60L)
@@ -71,6 +74,14 @@ public class SecureStorage {
                 this.token = null;
                 Log.e("FAILURE", "Token is invalid");
             }
+        }
+
+        public String getString() {
+            return token.getToken();
+        }
+
+        public boolean isExpired() {
+            return token.getExpiresAt().after(new Date());
         }
 
         public DecodedJWT getDecoded() {

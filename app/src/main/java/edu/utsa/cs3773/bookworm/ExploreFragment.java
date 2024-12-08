@@ -15,11 +15,10 @@ import java.util.List;
 
 import edu.utsa.cs3773.bookworm.model.Book;
 import edu.utsa.cs3773.bookworm.model.BookPreviewAdapter;
-import edu.utsa.cs3773.bookworm.model.api.APIHandler;
 import edu.utsa.cs3773.bookworm.model.api.MainHandler;
 
 public class ExploreFragment extends Fragment {
-    private List<Book.Preview> bookList = new ArrayList<>(); // Initialize here to avoid null reference
+    private final List<Book.Preview> bookList = new ArrayList<>(0); // Initialize as an empty list as default
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,14 +35,8 @@ public class ExploreFragment extends Fragment {
         BookPreviewAdapter bookPreviewAdapter = new BookPreviewAdapter(bookList); // Use initialized list
         recyclerViewBooks.setAdapter(bookPreviewAdapter);
 
-        try {
-            bookList = MainHandler.getSavedBooks().get();
-            bookPreviewAdapter.updateBooks(bookList);
-        } catch (Exception e) {
-            APIHandler.Message
-                .createMessage(e.getMessage())
-                .displayToast(getContext());
-        }
+        // Async operation: will update books once the data is available
+        MainHandler.getSavedBooks().thenAccept(bookPreviewAdapter::updateBooks);
 
         return root;
     }

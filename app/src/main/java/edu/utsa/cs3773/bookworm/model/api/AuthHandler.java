@@ -43,6 +43,9 @@ public class AuthHandler extends APIHandler {
         Call<SecureStorage.Token> loginUser(@Body JsonObject loginBody);
     }
 
+    // Do not instantiate class
+    private AuthHandler() {}
+
     // Registers the user once all passes are checked
     public static void registerUser(Activity activity, Context context, String username, String password) {
         JsonObject registerBody = new JsonObject();
@@ -110,7 +113,10 @@ public class AuthHandler extends APIHandler {
                     // User is redirected to the MainActivity
                     Toast.makeText(context, "Welcome, " + username + "!", Toast.LENGTH_SHORT).show();
                     // Async: Will not block the main thread when starting a new activity
-                    getUser(context, username, password).thenAccept(MainActivity::setCurrentUser);
+                    getUser(context, username, password).thenAccept(user -> {
+                        MainActivity.setCurrentUser(user);
+                        Log.d("USERNAME", user.getUsername());
+                    });
                     Intent intent = new Intent(context, MainActivity.class);
                     Bundle args = new Bundle();
                     activity.startActivity(intent, args);
@@ -155,7 +161,7 @@ public class AuthHandler extends APIHandler {
 
     public static CompletableFuture<User> getUser(Context context, String username, String password) {
         return CompletableFuture.supplyAsync(() -> {
-            final User[] user = { null };
+            User user;
 
             try {
                 retrofit2.Response<User.Response> response = AUTH_SERVICE.getUser(username).execute();
@@ -169,14 +175,15 @@ public class AuthHandler extends APIHandler {
 
                 User.Response foundUser = response.body();
 
-                user[0] = foundUser.isAdmin
+                user = foundUser.isAdmin
                     ? new AdminUser(foundUser.id, username, password, foundUser.email)
                     : new BasicUser(foundUser.id, username, password, foundUser.email);
             } catch (IOException e) {
                 Log.e("FETCH FAILURE", e.getMessage());
+                return null;
             }
 
-            return user[0];
+            return user;
         });
     }
 }

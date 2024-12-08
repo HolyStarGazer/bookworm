@@ -20,8 +20,11 @@ public class MainHandler extends APIHandler {
 
     private interface MainService {
         @GET("/api/books")
-        Call<List<Book.Preview>> getSavedBooks(@Header("authorization") String token);
+        Call<List<Book.Preview>> getSavedBooks(@Header("authorization") String accessToken);
     }
+
+    // Do not instantiate class
+    private MainHandler() {}
 
     public static CompletableFuture<List<Book.Preview>> getSavedBooks() {
         SharedPreferences esf = SecureStorage.getPreferences(null).getStorage();
